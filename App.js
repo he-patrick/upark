@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import MapView from 'react-native-maps';
 import BottomNavBar from './components/BottomNavBar';
+import DefaultSurveyPage from './components/DefaultSurvey';
 
 // Styles for the components
 const styles = StyleSheet.create({
@@ -54,6 +55,12 @@ export default function App() {
 
       {/* Bottom Navigation Bar */}
       <BottomNavBar filteredParkingLots={parkingLots}/>
+
+      {/* 
+      Default Survey 
+      This survey uses the default SurveyMonkey UI. To view, uncomment this component
+      */}
+      {/* <DefaultSurveyPage /> */}
     </View>
   );
 }
