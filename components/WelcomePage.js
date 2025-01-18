@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     paddingTop: 200
   },
   inputGroup: {
-    paddingTop: 50,
+    paddingTop: 40,
   },
   buttonContainer: {
     paddingBottom: 50,
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
 
 export default function WelcomePage({navigation}) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <View style={styles.h1Container}>
           <Text style={styles.h1}>
@@ -104,6 +104,6 @@ export default function WelcomePage({navigation}) {
           <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

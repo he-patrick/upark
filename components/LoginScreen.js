@@ -119,11 +119,14 @@ const styles = StyleSheet.create({
     paddingEnd: 50,
     paddingBottom: 350,
     paddingStart: 50,
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   content: {
-    display: 'flex',
-    width: '100%',
-    flexDirection: 'column',
+    paddingTop: 200,
+    // display: 'flex',
+    // width: '100%',
+    // flexDirection: 'column',
     alignItems: 'center',
 
   },
@@ -131,8 +134,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     padding: 10,
     flexDirection: 'column',
-    alignItems: 'flex-start',
-    gap: -25,
+    // alignItems: 'flex-start',
+    // gap: -25,
     alignSelf: 'stretch',
 
   },
@@ -146,7 +149,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 18,
     color: '#FFF',
     marginBottom: 40,
   },
