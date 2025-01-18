@@ -5,7 +5,7 @@ import BottomNavBar from './components/BottomNavBar';
 import SplashScreen from './components/SplashScreen';
 import * as Location from 'expo-location';
 import MapsPage from './components/MapsPage';
-import HomePage from './components/HomePage';
+import DashboardPage from './components/DashboardPage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -41,7 +41,7 @@ export default function App() {
           headerShown: false // This hides the navigation header
         }}
       >
-        <Stack.Screen name="Home" component={HomePage} />
+        <Stack.Screen name="DashboardPage" component={DashboardPage} />
         <Stack.Screen name="Maps" component={MapsPage} />
       </Stack.Navigator>
     </NavigationContainer>
