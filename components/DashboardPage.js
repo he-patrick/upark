@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const ParkingApp = () => {
+const DashboardPage = () => {
   return (
     <View style={styles.container}>
       {/* Top Tabs */}
@@ -115,4 +115,4 @@ const ParkingApp = () => {
   );
 };
 
-export default ParkingApp;
+export default DashboardPage;

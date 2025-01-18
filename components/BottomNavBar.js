@@ -51,6 +51,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
   },
+  selectedParkingLotItem: {
+    backgroundColor: '#e0f7fa', // Highlight color
+  },
   parkingLotName: {
     fontSize: 18,
     fontWeight: '600',
@@ -61,7 +64,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function BottomNavBar({ filteredParkingLots, animatedHeight }) {
+export default function BottomNavBar({
+  filteredParkingLots,
+  animatedHeight,
+  selectedParkingLotId,
+  setSelectedParkingLotId,
+}) {
   const initialHeightRef = useRef(COLLAPSED_HEIGHT);
 
   // Update the `initialHeightRef` based on animated value changes
@@ -77,10 +85,14 @@ export default function BottomNavBar({ filteredParkingLots, animatedHeight }) {
 
   const panResponder = useRef(
     PanResponder.create({
-      onMoveShouldSetPanResponder: (_, gestureState) => Math.abs(gestureState.dy) > 5,
+      onMoveShouldSetPanResponder: (_, gestureState) =>
+        Math.abs(gestureState.dy) > 5,
       onPanResponderMove: (_, gestureState) => {
         let newHeight = initialHeightRef.current - gestureState.dy;
-        newHeight = Math.max(COLLAPSED_HEIGHT, Math.min(newHeight, EXPANDED_HEIGHT));
+        newHeight = Math.max(
+          COLLAPSED_HEIGHT,
+          Math.min(newHeight, EXPANDED_HEIGHT)
+        );
         animatedHeight.setValue(newHeight);
       },
       onPanResponderRelease: (_, gestureState) => {
@@ -88,12 +100,21 @@ export default function BottomNavBar({ filteredParkingLots, animatedHeight }) {
         let toHeight;
 
         if (gestureState.vy < -VELOCITY_THRESHOLD) {
-          toHeight = finalHeight < HALF_EXPANDED_HEIGHT ? HALF_EXPANDED_HEIGHT : EXPANDED_HEIGHT;
+          toHeight =
+            finalHeight < HALF_EXPANDED_HEIGHT
+              ? HALF_EXPANDED_HEIGHT
+              : EXPANDED_HEIGHT;
         } else if (gestureState.vy > VELOCITY_THRESHOLD) {
-          toHeight = finalHeight > HALF_EXPANDED_HEIGHT ? HALF_EXPANDED_HEIGHT : COLLAPSED_HEIGHT;
+          toHeight =
+            finalHeight > HALF_EXPANDED_HEIGHT
+              ? HALF_EXPANDED_HEIGHT
+              : COLLAPSED_HEIGHT;
         } else {
-          const nearest = [COLLAPSED_HEIGHT, HALF_EXPANDED_HEIGHT, EXPANDED_HEIGHT].reduce((prev, curr) =>
-            Math.abs(finalHeight - curr) < Math.abs(finalHeight - prev) ? curr : prev
+          const nearest = [COLLAPSED_HEIGHT, HALF_EXPANDED_HEIGHT, EXPANDED_HEIGHT].reduce(
+            (prev, curr) =>
+              Math.abs(finalHeight - curr) < Math.abs(finalHeight - prev)
+                ? curr
+                : prev
           );
           toHeight = nearest;
         }
@@ -115,12 +136,25 @@ export default function BottomNavBar({ filteredParkingLots, animatedHeight }) {
         <FlatList
           data={filteredParkingLots}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity style={styles.parkingLotItem}>
-              <Text style={styles.parkingLotName}>{item.name}</Text>
-              <Text style={styles.parkingLotDistance}>{item.distance}</Text>
-            </TouchableOpacity>
-          )}
+          renderItem={({ item }) => {
+            const distanceText =
+              item.distance < 1
+                ? `${Math.round(item.distance * 5280)} feet`
+                : `${item.distance.toFixed(1)} miles`;
+
+            return (
+              <TouchableOpacity
+                style={[
+                  styles.parkingLotItem,
+                  item.id === selectedParkingLotId && styles.selectedParkingLotItem,
+                ]}
+                onPress={() => setSelectedParkingLotId(item.id)}
+              >
+                <Text style={styles.parkingLotName}>{item.name}</Text>
+                <Text style={styles.parkingLotDistance}>{distanceText}</Text>
+              </TouchableOpacity>
+            );
+          }}
         />
       </View>
     </Animated.View>

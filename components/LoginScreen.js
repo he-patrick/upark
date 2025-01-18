@@ -7,7 +7,7 @@ import * as Google from 'expo-auth-session/providers/google';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { makeRedirectUri } from 'expo-auth-session';
 WebBrowser.maybeCompleteAuthSession();
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
 
   const redirectUri = makeRedirectUri({
     scheme: 'upark', // This should match the scheme in app.json
@@ -53,6 +53,7 @@ const LoginScreen = () => {
       });
 
       console.log('Apple Sign-In successful!', credential);
+      navigation.navigate('Welcome');
       // You can now use credential.user, credential.email, etc.
 
       // Handle user data
