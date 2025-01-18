@@ -9,6 +9,10 @@
   "owner": "upark",
   "expo": {
     "ios": {
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "We need your location to show your current position on the map",
+        "NSLocationAlwaysUsageDescription": "We need your location to track your position continuously in the background"
+      },
       "bundleIdentifier": "com.upark.upark"
     },
     "extra": {

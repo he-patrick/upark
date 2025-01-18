@@ -1,5 +1,4 @@
-// BottomNavBar.js
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -16,7 +15,6 @@ const { height } = Dimensions.get('window');
 const COLLAPSED_HEIGHT = 200;
 const HALF_EXPANDED_HEIGHT = height * 0.5;
 const EXPANDED_HEIGHT = height * 0.7;
-
 const VELOCITY_THRESHOLD = 0.1;
 
 const styles = StyleSheet.create({
@@ -66,49 +64,42 @@ const styles = StyleSheet.create({
 export default function BottomNavBar({ filteredParkingLots, animatedHeight }) {
   const initialHeightRef = useRef(COLLAPSED_HEIGHT);
 
+  // Update the `initialHeightRef` based on animated value changes
+  useEffect(() => {
+    const listenerId = animatedHeight.addListener(({ value }) => {
+      initialHeightRef.current = value;
+    });
+
+    return () => {
+      animatedHeight.removeListener(listenerId);
+    };
+  }, [animatedHeight]);
+
   const panResponder = useRef(
     PanResponder.create({
-      onMoveShouldSetPanResponder: (_, gestureState) => {
-        return Math.abs(gestureState.dy) > 5;
-      },
-      onPanResponderGrant: () => {
-        initialHeightRef.current = animatedHeight._value || COLLAPSED_HEIGHT;
-      },
+      onMoveShouldSetPanResponder: (_, gestureState) => Math.abs(gestureState.dy) > 5,
       onPanResponderMove: (_, gestureState) => {
         let newHeight = initialHeightRef.current - gestureState.dy;
         newHeight = Math.max(COLLAPSED_HEIGHT, Math.min(newHeight, EXPANDED_HEIGHT));
         animatedHeight.setValue(newHeight);
       },
       onPanResponderRelease: (_, gestureState) => {
-        let finalHeight = animatedHeight._value;
+        let finalHeight = animatedHeight._value || COLLAPSED_HEIGHT;
         let toHeight;
 
-        if (gestureState.vy < -VELOCITY_THRESHOLD || gestureState.dy < -10) {
-          if (finalHeight < HALF_EXPANDED_HEIGHT) {
-            toHeight = HALF_EXPANDED_HEIGHT;
-          } else {
-            toHeight = EXPANDED_HEIGHT;
-          }
-        } else if (gestureState.vy > VELOCITY_THRESHOLD || gestureState.dy > 10) {
-          if (finalHeight > HALF_EXPANDED_HEIGHT) {
-            toHeight = HALF_EXPANDED_HEIGHT;
-          } else {
-            toHeight = COLLAPSED_HEIGHT;
-          }
+        if (gestureState.vy < -VELOCITY_THRESHOLD) {
+          toHeight = finalHeight < HALF_EXPANDED_HEIGHT ? HALF_EXPANDED_HEIGHT : EXPANDED_HEIGHT;
+        } else if (gestureState.vy > VELOCITY_THRESHOLD) {
+          toHeight = finalHeight > HALF_EXPANDED_HEIGHT ? HALF_EXPANDED_HEIGHT : COLLAPSED_HEIGHT;
         } else {
-          const distances = [
-            { height: COLLAPSED_HEIGHT, distance: Math.abs(finalHeight - COLLAPSED_HEIGHT) },
-            { height: HALF_EXPANDED_HEIGHT, distance: Math.abs(finalHeight - HALF_EXPANDED_HEIGHT) },
-            { height: EXPANDED_HEIGHT, distance: Math.abs(finalHeight - EXPANDED_HEIGHT) },
-          ];
-
-          distances.sort((a, b) => a.distance - b.distance);
-          toHeight = distances[0].height;
+          const nearest = [COLLAPSED_HEIGHT, HALF_EXPANDED_HEIGHT, EXPANDED_HEIGHT].reduce((prev, curr) =>
+            Math.abs(finalHeight - curr) < Math.abs(finalHeight - prev) ? curr : prev
+          );
+          toHeight = nearest;
         }
 
-        Animated.timing(animatedHeight, {
+        Animated.spring(animatedHeight, {
           toValue: toHeight,
-          duration: 300,
           useNativeDriver: false,
         }).start();
       },
@@ -117,12 +108,9 @@ export default function BottomNavBar({ filteredParkingLots, animatedHeight }) {
 
   return (
     <Animated.View style={[styles.bottomNav, { height: animatedHeight }]}>
-      {/* Drag Handle */}
       <View style={styles.dragHandle} {...panResponder.panHandlers}>
         <View style={styles.dragBar} />
       </View>
-
-      {/* Content */}
       <View style={styles.contentContainer}>
         <FlatList
           data={filteredParkingLots}

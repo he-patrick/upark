@@ -1,10 +1,9 @@
-// App.js
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, StyleSheet, Animated, Dimensions, TouchableOpacity, Text } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import BottomNavBar from './components/BottomNavBar';
-import DefaultSurveyPage from './components/DefaultSurvey';
 import SplashScreen from './components/SplashScreen';
+import * as Location from 'expo-location';
 
 const styles = StyleSheet.create({
   container: {
@@ -34,10 +33,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     backgroundColor: '#fff',
-    borderRadius: 0,
     elevation: 10,
-    shadowColor: '#000',
-    zIndex: 10,
     paddingVertical: 30,
     alignItems: 'center',
     justifyContent: 'center',
@@ -55,7 +51,7 @@ const styles = StyleSheet.create({
   },
 });
 
-// Test data
+// Test data for parking lots
 const parkingLots = [
   { id: 1, name: 'Parking Lot A', distance: '0.5 miles' },
   { id: 2, name: 'Parking Lot B', distance: '1.0 miles' },
@@ -66,23 +62,31 @@ const parkingLots = [
 
 export default function App() {
   const [mapType, setMapType] = useState('terrain');
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [showSplash, setShowSplash] = useState(true);
 
   const animatedHeight = useRef(new Animated.Value(200)).current;
 
-  const toggleMapType = () => {
-    setMapType((prevType) => (prevType === 'terrain' ? 'hybrid' : 'terrain'));
-  };
+  // Request location permission and fetch the current location
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
 
-  const buttonBottomPosition = Animated.add(
-    animatedHeight,
-    new Animated.Value(110) // Adjusted to ensure it's above the BottomNavBar
-  );
-  const [showSplash, setShowSplash] = useState(true);
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+    })();
+  }, []);
 
+  // Handle splash screen visibility
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSplash(false);
-    }, 2000); // Show splash for 2 seconds
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -91,30 +95,52 @@ export default function App() {
     return <SplashScreen />;
   }
 
+  if (!location) {
+    return (
+      <View style={styles.container}>
+        <Text>{errorMsg || 'Waiting for location...'}</Text>
+      </View>
+    );
+  }
+
+  const toggleMapType = () => {
+    setMapType((prevType) => (prevType === 'terrain' ? 'hybrid' : 'terrain'));
+  };
+
   return (
     <View style={styles.container}>
-      <MapView mapType={mapType} style={styles.map} />
+      <MapView
+        mapType={mapType}
+        style={styles.map}
+        region={{
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+        showsUserLocation={true}
+        followsUserLocation={true}
+      >
+        <Marker coordinate={{ latitude: location.coords.latitude, longitude: location.coords.longitude }} />
+      </MapView>
 
       {/* Toggle Map Type Button */}
-      <Animated.View style={[styles.toggleButton, { bottom: buttonBottomPosition }]}>
+      <Animated.View style={[styles.toggleButton, { bottom: Animated.add(animatedHeight, new Animated.Value(110)) }]}>
         <TouchableOpacity onPress={toggleMapType}>
           <Text style={styles.toggleButtonText}>
-            {mapType === 'terrain' ? 'Switch to Hybrid' : 'Switch to Terrain'}
+            {mapType === 'terrain' ? 'Switch to Satellite' : 'Switch to Normal'}
           </Text>
         </TouchableOpacity>
       </Animated.View>
 
       {/* Bottom Navigation Bar */}
-      <BottomNavBar
-        filteredParkingLots={parkingLots}
-        animatedHeight={animatedHeight}
-      />
+      <BottomNavBar filteredParkingLots={parkingLots} animatedHeight={animatedHeight} />
 
       {/* Reserve Button */}
       <View style={styles.reserveButtonContainer}>
-        <View style={styles.reserveButton}>
+        <TouchableOpacity style={styles.reserveButton}>
           <Text style={styles.reserveButtonText}>Book your spot</Text>
-        </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
