@@ -93,17 +93,6 @@ const LoginScreen = () => {
               <Text style={styles.buttonText}>Sign in with Apple</Text>
             </View>
           </TouchableOpacity>
-          {/* <AppleAuthentication.AppleAuthenticationButton
-              buttonType={
-                AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
-              }
-              buttonStyle={
-                AppleAuthentication.AppleAuthenticationButtonStyle.WHITE
-              }
-              cornerRadius={50}
-              style={styles.appleButton}
-              onPress={handleAppleSignIn}
-            /> */}
           <TouchableOpacity 
             style={[styles.signInButton, styles.googleButton]}
             onPress={handleGoogleSignIn}
