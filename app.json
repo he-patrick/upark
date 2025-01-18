@@ -23,6 +23,11 @@
     "owner": "upark",
     "android": {
       "package": "com.upark.upark"
-    }
+    },
+    "fonts": 
+      {
+        "asset": "assets/fonts/Alexandria-VariableFont_wght.ttf",
+        "family": "Alexandria"
+      }
   }
 }
