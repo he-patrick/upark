@@ -1,4 +1,21 @@
 {
   "name": "upark",
-  "slug": "upark"
+  "slug": "upark",
+  "extra": {
+    "eas": {
+      "projectId": "fd9ec3fd-4895-4cce-813a-2099cbfd013d"
+    }
+  },
+  "owner": "upark",
+  "expo": {
+    "ios": {
+      "bundleIdentifier": "com.upark.upark"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "fd9ec3fd-4895-4cce-813a-2099cbfd013d"
+      }
+    },
+    "owner": "upark"
+  }
 }
