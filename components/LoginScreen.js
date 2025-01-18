@@ -7,12 +7,11 @@ import * as Google from 'expo-auth-session/providers/google';
 import { makeRedirectUri } from 'expo-auth-session';
 
 const LoginScreen = () => {
-
   const redirectUri = makeRedirectUri({
+    scheme: 'upark', // This should match the scheme in app.json
     useProxy: true,
   });
   console.log('Redirect URI:', redirectUri);
-
   // Initialize Google authentication
   const [request, response, promptAsync] = Google.useAuthRequest({
     expoClientId: '594767575076-n93esncs34jtgfl1mbana0obttbfrbkl.apps.googleusercontent.com',
@@ -20,6 +19,7 @@ const LoginScreen = () => {
     androidClientId: '594767575076-mu16msoird8hns0m1hd0khtpptsa8hr2.apps.googleusercontent.com',
     // Optionally, you can add scopes
     scopes: ['profile', 'email'],
+    redirectUri,
   });
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const LoginScreen = () => {
 
   const handleGoogleSignIn = () => {
     // Implement Google Sign In logic
-    promptAsync();
+    promptAsync({ useProxy: true });
     console.log('Google sign in pressed');
   };
 

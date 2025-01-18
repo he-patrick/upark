@@ -1,6 +1,7 @@
 {
   "name": "upark",
   "slug": "upark",
+  "scheme": "upark",
   "extra": {
     "eas": {
       "projectId": "fd9ec3fd-4895-4cce-813a-2099cbfd013d"
@@ -11,7 +12,8 @@
     "ios": {
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "We need your location to show your current position on the map",
-        "NSLocationAlwaysUsageDescription": "We need your location to track your position continuously in the background"
+        "NSLocationAlwaysUsageDescription": "We need your location to track your position continuously in the background",
+        "CFBundleURLSchemes": ["com.googleusercontent.apps.594767575076-luv8frjf4fm5qk6qcfru1trj2lsrgfju"]
       },
       "bundleIdentifier": "com.upark.upark"
     },
