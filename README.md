@@ -1,3 +1,3 @@
 # Setup
-npm install -g eas-cli
-eas login
+npm install -g eas-cli </br>
+eas login </br>
