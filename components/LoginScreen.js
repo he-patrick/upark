@@ -4,9 +4,11 @@ import FaGoogle from 'react-native-vector-icons/FontAwesome';
 import FaApple from 'react-native-vector-icons/FontAwesome';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
+import * as AppleAuthentication from 'expo-apple-authentication';
 import { makeRedirectUri } from 'expo-auth-session';
-
+WebBrowser.maybeCompleteAuthSession();
 const LoginScreen = () => {
+
   const redirectUri = makeRedirectUri({
     scheme: 'upark', // This should match the scheme in app.json
     useProxy: true,
@@ -41,9 +43,28 @@ const LoginScreen = () => {
         });
     }
   }, [response]);
-  const handleAppleSignIn = () => {
-    // Implement Apple Sign In logic
-    console.log('Apple sign in pressed');
+  const handleAppleSignIn = async () => {
+    try {
+      const credential = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthentication.AppleAuthenticationScope.EMAIL,
+          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+        ],
+      });
+
+      console.log('Apple Sign-In successful!', credential);
+      // You can now use credential.user, credential.email, etc.
+
+      // Handle user data
+    } catch (error) {
+      if (error.code === 'ERR_CANCELED') {
+        // User canceled the sign-in
+        console.log('User canceled Apple Sign-In');
+      } else {
+        // Other errors
+        console.error('Apple Sign-In Error:', error);
+      }
+    }
   };
 
   const handleGoogleSignIn = () => {
@@ -72,7 +93,17 @@ const LoginScreen = () => {
               <Text style={styles.buttonText}>Sign in with Apple</Text>
             </View>
           </TouchableOpacity>
-
+          {/* <AppleAuthentication.AppleAuthenticationButton
+              buttonType={
+                AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
+              }
+              buttonStyle={
+                AppleAuthentication.AppleAuthenticationButtonStyle.WHITE
+              }
+              cornerRadius={50}
+              style={styles.appleButton}
+              onPress={handleAppleSignIn}
+            /> */}
           <TouchableOpacity 
             style={[styles.signInButton, styles.googleButton]}
             onPress={handleGoogleSignIn}
