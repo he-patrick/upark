@@ -11,8 +11,12 @@ import DashboardPage from './components/DashboardPage';
 import MapsPage from './components/MapsPage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LoginScreen from './components/LoginScreen';
+import * as Font from 'expo-font';
 
 const Stack = createNativeStackNavigator();
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -21,6 +25,15 @@ const styles = StyleSheet.create({
 });
 
 export default function App() {
+  useEffect(() => {
+    async function loadFont() {
+      await Font.loadAsync({
+        'Alexandria': require('./assets/fonts/Alexandria-VariableFont_wght.ttf'),
+      });
+    }
+    loadFont();
+  }, []);
+
   const [showSplash, setShowSplash] = useState(true);
 
   // Handle splash screen visibility
@@ -44,6 +57,7 @@ export default function App() {
           headerShown: false // This hides the navigation header
         }}
       >
+        <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="SelectUser" component={SelectUserPage} />
         <Stack.Screen name="Welcome" component={WelcomePage} />
         <Stack.Screen name="Payment" component={PaymentPage} />
