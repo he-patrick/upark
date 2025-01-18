@@ -16,6 +16,9 @@
         "projectId": "fd9ec3fd-4895-4cce-813a-2099cbfd013d"
       }
     },
-    "owner": "upark"
+    "owner": "upark",
+    "android": {
+      "package": "com.upark.upark"
+    }
   }
 }
