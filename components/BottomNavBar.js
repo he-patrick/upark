@@ -15,7 +15,7 @@ const { height } = Dimensions.get('window');
 const COLLAPSED_HEIGHT = 200;
 const HALF_EXPANDED_HEIGHT = height * 0.5;
 const EXPANDED_HEIGHT = height * 0.7;
-const VELOCITY_THRESHOLD = 0.1;
+const VELOCITY_THRESHOLD = 0.5;
 
 const styles = StyleSheet.create({
   bottomNav: {
