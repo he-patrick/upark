@@ -12,6 +12,7 @@ import MapsPage from './components/MapsPage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './components/LoginScreen';
+import BookingConfirmedPage from './components/BookingConfirmedPage';
 import * as Font from 'expo-font';
 
 const Stack = createNativeStackNavigator();
@@ -63,6 +64,7 @@ export default function App() {
         <Stack.Screen name="Payment" component={PaymentPage} />
         <Stack.Screen name="DashboardPage" component={DashboardPage} />
         <Stack.Screen name="Maps" component={MapsPage} />
+        <Stack.Screen name="BookingConfirmedPage" component={BookingConfirmedPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
