@@ -1,5 +1,5 @@
 // App.js
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   TextInput,
@@ -11,6 +11,7 @@ import {
 import MapView from 'react-native-maps';
 import BottomNavBar from './components/BottomNavBar';
 import DefaultSurveyPage from './components/DefaultSurvey';
+import SplashScreen from './components/SplashScreen';
 
 // Styles for the components
 const styles = StyleSheet.create({
@@ -47,15 +48,24 @@ const parkingLots = [
 ];
 
 export default function App() {
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 2000); // Show splash for 2 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (showSplash) {
+    return <SplashScreen />;
+  }
 
   return (
     <View style={styles.container}>
-      {/* Map Background */}
       <MapView style={styles.map} />
-
-      {/* Bottom Navigation Bar */}
       <BottomNavBar filteredParkingLots={parkingLots}/>
-
       {/* 
       Default Survey 
       This survey uses the default SurveyMonkey UI. To view, uncomment this component
