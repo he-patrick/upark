@@ -4,7 +4,6 @@ import MapView, { Marker } from 'react-native-maps';
 import BottomNavBar from './components/BottomNavBar';
 import SplashScreen from './components/SplashScreen';
 import * as Location from 'expo-location';
-import LoginPage from './components/LoginPage';
 import SelectUserPage from './components/SelectUserPage';
 import WelcomePage from './components/WelcomePage';
 import PaymentPage from './components/PaymentPage';
@@ -40,12 +39,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator 
-        initialRouteName="Login"
+        initialRouteName="DashboardPage"
         screenOptions={{
           headerShown: false // This hides the navigation header
         }}
       >
-        <Stack.Screen name="Login" component={LoginPage} />
         <Stack.Screen name="SelectUser" component={SelectUserPage} />
         <Stack.Screen name="Welcome" component={WelcomePage} />
         <Stack.Screen name="Payment" component={PaymentPage} />
