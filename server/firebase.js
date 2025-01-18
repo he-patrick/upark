@@ -11,14 +11,13 @@ console.log("Firebase config reloaded");
 export const db = getFirestore();
 export const colRef = collection(db, "users");
 
-export const fetchData = async () => {
+export const fetchUserData = async () => {
   let users = [];
   try {
     const snapshot = await getDocs(colRef);
     snapshot.docs.forEach((doc) => {
       users.push({ ...doc.data(), id: doc.id });
     });
-    console.log("Fetched users:", pins);
     return users;
   } catch (error) {
     console.error("Error fetching users:", error);
@@ -26,9 +25,10 @@ export const fetchData = async () => {
   }
 };
 
-export const addUser = async (name, license) => {
+export const addUser = async (email, name, license) => {
   try {
     const docRef = await addDoc(colRef, {
+      email,
       name,
       license,
     });

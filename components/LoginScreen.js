@@ -6,6 +6,7 @@ import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { makeRedirectUri } from 'expo-auth-session';
+import { fetchUserData, addUser } from "../server/firebase";
 WebBrowser.maybeCompleteAuthSession();
 const LoginScreen = ({ navigation }) => {
 
@@ -53,6 +54,33 @@ const LoginScreen = ({ navigation }) => {
       });
 
       console.log('Apple Sign-In successful!', credential);
+      
+      const handleUserCheck = async () => {
+        try {
+          const users = await fetchUserData(); // Wait for the users array to be fetched
+          
+          let userFound = false;
+      
+          users.forEach(user => {
+            if (user.email === credential.email) {
+              userFound = true;
+              navigation.navigate('DashboardPage');
+            }
+          });
+      
+          // If user not found, add them
+          if (!userFound) {
+            await addUser(credential.email, null, null);
+            navigation.navigate('Welcome');
+          }
+        } catch (error) {
+          console.error("Error handling user check:", error);
+        }
+      };
+      
+      handleUserCheck();
+
+
       navigation.navigate('Welcome');
       // You can now use credential.user, credential.email, etc.
 
