@@ -3,7 +3,7 @@ import { SafeAreaView } from 'react-native';
 import { WebView } from 'react-native-webview';
 
 const DefaultSurveyPage = () => {
-  const surveyLink = "https://www.surveymonkey.com/r/9P62Z5Y"; // Replace with your actual survey link
+  const surveyLink = "https://www.surveymonkey.com/r/DSWT8LT"; // Replace with your actual survey link
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

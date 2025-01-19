@@ -9,6 +9,7 @@ import {
   Animated,
   Dimensions,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const { height } = Dimensions.get('window');
 
@@ -64,6 +65,14 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#00796B', // Teal color for the border
   },
+  parkingLotContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  parkingLotDetails: {
+    flex: 1,
+  },
   parkingLotName: {
     fontSize: 18,
     fontWeight: '600',
@@ -78,6 +87,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#333',
     marginTop: 5,
+  },
+  parkingLotRating: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  ratingText: {
+    fontSize: 16,
+    color: '#000',
+    marginRight: 5,
   },
 });
 
@@ -107,7 +125,7 @@ export default function BottomNavBar({
     }
 
     // Add random noise between -$0.50 and +$0.50
-    const noise = (Math.random() - 0.5);
+    const noise = Math.random() - 0.5;
 
     const finalPricePerHour = basePricePerHour + noise;
 
@@ -117,14 +135,21 @@ export default function BottomNavBar({
     return pricePerHour;
   }
 
-  // Calculate prices when filteredParkingLots changes
+  // Calculate prices and ratings when filteredParkingLots changes
   useEffect(() => {
     const time = new Date();
     const updatedParkingLots = filteredParkingLots.map((lot) => {
       const price = calculateParkingPrice(time);
+
+      // Add a random rating between 4.0 and 5.0, rounded to one decimal place
+      const rating = parseFloat(
+        (Math.random() * (5 - 4) + 4).toFixed(1)
+      );
+
       return {
         ...lot,
         price,
+        rating,
       };
     });
     setParkingLotsWithPrices(updatedParkingLots);
@@ -229,11 +254,42 @@ export default function BottomNavBar({
                   }
                 }}
               >
-                <Text style={styles.parkingLotName}>{item.name}</Text>
-                <Text style={styles.parkingLotDistance}>{distanceText}</Text>
-                <Text style={styles.parkingLotPrice}>
-                  ${item.price} / hour
-                </Text>
+                <View style={styles.parkingLotContent}>
+                  {/* Parking Lot Details */}
+                  <View style={styles.parkingLotDetails}>
+                    <Text style={styles.parkingLotName}>{item.name}</Text>
+                    <Text style={styles.parkingLotDistance}>{distanceText}</Text>
+                    <Text style={styles.parkingLotPrice}>
+                      ${item.price} / hour
+                    </Text>
+                  </View>
+                  {/* Rating */}
+                  <View style={styles.parkingLotRating}>
+                    {/* Optional: Display numerical rating */}
+                    <Text style={styles.ratingText}>{item.rating}</Text>
+
+                    {/* Display star icons based on rating */}
+                    {Array.from({ length: 5 }).map((_, index) => {
+                      const ratingValue = index + 1;
+                      let iconName = 'star-o';
+
+                      if (ratingValue <= item.rating) {
+                        iconName = 'star';
+                      } else if (ratingValue - 0.5 <= item.rating) {
+                        iconName = 'star-half-o';
+                      }
+
+                      return (
+                        <Icon
+                          key={index}
+                          name={iconName}
+                          size={16}
+                          color="#FFD700"
+                        />
+                      );
+                    })}
+                  </View>
+                </View>
               </TouchableOpacity>
             );
           }}

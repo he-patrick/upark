@@ -159,7 +159,6 @@ const DashboardPage = ({ navigation, route }) => {
     selectedEndTime,
   });
 
-
   const handleSearch = async () => {
     if (!address) return;
 
