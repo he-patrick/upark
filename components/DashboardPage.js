@@ -121,12 +121,34 @@ const styles = StyleSheet.create({
     fontFamily: 'Anuphan',
     textAlign: 'center',
   },
+  finishButton: {
+    marginTop: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: '#ff6b6b',
+    borderRadius: 25,
+    alignItems: 'center',
+    alignSelf: 'center',
+  },
+  finishButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontFamily: 'Anuphan',
+  },
 });
 
 const DashboardPage = ({ navigation, route }) => {
   const { latitude, longitude, appleID, selectedStartTime, selectedEndTime } = route.params || {};
   const [address, setAddress] = useState('');
   const [reservationAddress, setReservationAddress] = useState('');
+
+  const [reservationDetails, setReservationDetails] = useState({
+    latitude,
+    longitude,
+    selectedStartTime,
+    selectedEndTime,
+  });
+
 
   const handleSearch = async () => {
     if (!address) return;
@@ -154,7 +176,7 @@ const DashboardPage = ({ navigation, route }) => {
 
   const startTime = selectedStartTime ? new Date(selectedStartTime) : null;
   const endTime = selectedEndTime ? new Date(selectedEndTime) : null;
-  const hasReservation = latitude && longitude && startTime && endTime;
+  const hasReservation = reservationDetails.latitude && reservationDetails.longitude && reservationDetails.selectedStartTime && reservationDetails.selectedEndTime;
 
   useEffect(() => {
     const fetchAddress = async () => {
@@ -188,6 +210,20 @@ const DashboardPage = ({ navigation, route }) => {
     }
   };  
 
+  const handleFinish = () => {
+
+    setReservationDetails({
+        latitude: null,
+        longitude: null,
+        selectedStartTime: null,
+        selectedEndTime: null,
+      });
+      setReservationAddress('');
+    navigation.navigate('DefaultSurveyPage');
+
+    
+};
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.tabs}>
@@ -212,35 +248,36 @@ const DashboardPage = ({ navigation, route }) => {
       <View style={styles.historyContainer}>
         <Text style={styles.historyTitle}>Bookings</Text>
         {hasReservation ? (
-          <TouchableOpacity onPress={openInAppleMaps} style={styles.reservationCard}>
+        <TouchableOpacity onPress={openInAppleMaps} style={styles.reservationCard}>
             <MapView
-              style={styles.map}
-              initialRegion={{
+            style={styles.map}
+            initialRegion={{
                 latitude: latitude,
                 longitude: longitude,
                 latitudeDelta: 0.005,
                 longitudeDelta: 0.005,
-              }}
+            }}
             >
-              <Marker coordinate={{ latitude: latitude, longitude: longitude }} />
+            <Marker coordinate={{ latitude: latitude, longitude: longitude }} />
             </MapView>
             <View style={styles.timeContainer}>
-              <Text style={styles.timeText}>
-                {reservationAddress}
-              </Text>
-              <Text style={styles.timeText}>
+            <Text style={styles.timeText}>{reservationAddress}</Text>
+            <Text style={styles.timeText}>
                 {startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} Start, {endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} End
-              </Text>
+            </Text>
             </View>
-          </TouchableOpacity>
+            <TouchableOpacity
+            style={styles.finishButton}
+            onPress={() => handleFinish()}
+            >
+            <Text style={styles.finishButtonText}>Exit This Booking</Text>
+            </TouchableOpacity>
+        </TouchableOpacity>
         ) : (
-          <View style={styles.historyCard}>
-            <Image
-              source={require('../assets/parking_sign.png')}
-              style={styles.image}
-            />
+        <View style={styles.historyCard}>
+            <Image source={require('../assets/parking_sign.png')} style={styles.image} />
             <Text style={styles.emptyText}>Seems pretty empty for now...</Text>
-          </View>
+        </View>
         )}
       </View>
     </SafeAreaView>
