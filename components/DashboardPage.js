@@ -238,7 +238,9 @@ const DashboardPage = ({ navigation, route }) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.tabs}>
         <Text style={[styles.tab, styles.activeTab]}>Park</Text>
-        <Text style={styles.tab}>Post</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('DashboardPagePost')}>
+          <Text style={styles.tab}>Post</Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.searchContainer}>
