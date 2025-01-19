@@ -18,6 +18,7 @@ import SpotRegistrationConfirmedPage from './components/SpotRegistrationConfirme
 import WelcomePagePost from './components/WelcomePagePost';
 import ProofOfOwnershipPage from './components/ProofOfOwnershipPage';
 import DefaultSurveyPage from './components/DefaultSurvey';
+import PostingMap from './components/PostingMap';
 import * as Font from 'expo-font';
 
 const Stack = createNativeStackNavigator();
@@ -75,6 +76,7 @@ export default function App() {
         <Stack.Screen name="SpotRegistrationConfirmedPage" component={SpotRegistrationConfirmedPage} />
         <Stack.Screen name="ProofOfOwnershipPage" component={ProofOfOwnershipPage} />
         <Stack.Screen name="DefaultSurveyPage" component={DefaultSurveyPage} />
+        <Stack.Screen name="PostingMap" component={PostingMap} />
       </Stack.Navigator>
     </NavigationContainer>
   );

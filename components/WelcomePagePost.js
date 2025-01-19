@@ -81,7 +81,7 @@ export default function WelcomePagePost({navigation, route}) {
       // Use updateUserInfo instead of addUser
       await updateUserInfo(appleID, fullName, null);
   
-      navigation.navigate('Payment', {
+      navigation.navigate('PostingMap', {
         name: fullName,
         appleID: appleID
       });
