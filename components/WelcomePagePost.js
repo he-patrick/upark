@@ -72,7 +72,7 @@ export default function WelcomePagePost({navigation, route}) {
   const [licensePlate, setLicensePlate] = useState('');
 
   const handleSubmit = async () => {
-    if (!fullName.trim() || !licensePlate.trim()) {
+    if (!fullName.trim()) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
