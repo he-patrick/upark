@@ -1,35 +1,43 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, SafeAreaView } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons'
 
 const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#000',
       padding: 16,
+      alignContent: 'center',
+      justifyContent: 'center',
     },
     tabs: {
       flexDirection: 'row',
       justifyContent: 'space-around',
       borderBottomWidth: 1,
-      borderBottomColor: '#fff',
+      // borderBottomColor: '#fff',
       paddingBottom: 8,
+      padding: 20,
     },
     tab: {
       color: '#fff',
       fontSize: 18,
       fontFamily: 'Alexandria',
+      paddingBottom: 10,
     },
     activeTab: {
       borderBottomWidth: 2,
       borderBottomColor: '#fff',
     },
     searchContainer: {
+      backgroundColor: '#343434',
       marginVertical: 16,
+      // width: 280,
+      flexDirection: 'row',
     },
     searchInput: {
-      backgroundColor: '#333',
+      backgroundColor: '#343434',
       color: '#fff',
-      borderRadius: 8,
+      borderRadius: 20,
       padding: 12,
       fontSize: 16,
     },
@@ -85,10 +93,11 @@ const DashboardPage = () => {
 
       {/* Search Bar */}
       <View style={styles.searchContainer}>
+        <MaterialIcons name="search" size={24} color="#A3A3A3" />
         <TextInput
           style={styles.searchInput}
           placeholder="Search parking spaces ..."
-          placeholderTextColor="#999"
+          placeholderTextColor="#A3A3A3"
         />
       </View>
 
