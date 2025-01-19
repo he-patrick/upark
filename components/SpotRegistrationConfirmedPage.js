@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   },
   paragraph: {
     fontFamily: 'Anuphan',
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '400',
     textAlign: 'justify', // Center the text
     marginTop: 20, // Adds space between the image and the paragraph

@@ -48,12 +48,16 @@ const styles = StyleSheet.create({
   },
   addressContainer: {
     padding: 10,
-    backgroundColor: '#f0f0f0',
-    borderBottomWidth: 1,
-    borderColor: '#ccc',
+    paddingTop: 30,
+    alignContent: 'center'
+    // backgroundColor: '#f0f0f0',
+    // borderBottomWidth: 1,
+    // borderColor: '#ccc',
   },
   addressText: {
     fontSize: 16,
+    fontFamily: 'Alexandria',
+    alignSelf: 'center',
     color: '#333',
   },
   parkingLotItem: {

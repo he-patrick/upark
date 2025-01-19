@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 20,
     padding: 10,
-    backgroundColor: '#fff',
-    borderRadius: 5,
+    backgroundColor: '#000',
+    borderRadius: 20,
     elevation: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
   },
   toggleButtonText: {
     fontSize: 16,
+    color: '#fff'
   },
   reserveButtonContainer: {
     position: 'absolute',
@@ -90,7 +91,7 @@ export default function PostingMap({navigation}) {
 
   // New state variables for marker and address
   const [markerCoordinate, setMarkerCoordinate] = useState(null);
-  const [address, setAddress] = useState('Tap on the map to get the address');
+  const [address, setAddress] = useState('Tap on map to select parking address');
 
   const animatedHeight = useRef(new Animated.Value(200)).current;
 
@@ -275,7 +276,7 @@ export default function PostingMap({navigation}) {
       >
         <TouchableOpacity onPress={toggleMapType}>
           <Text style={styles.toggleButtonText}>
-            {mapType === 'terrain' ? 'Switch to Satellite' : 'Switch to Normal'}
+            {mapType === 'terrain' ? 'Satellite' : 'Normal'}
           </Text>
         </TouchableOpacity>
       </Animated.View>

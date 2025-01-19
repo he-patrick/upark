@@ -25,8 +25,8 @@ const styles = StyleSheet.create({
     top: 40,
     left: 20,
     padding: 10,
-    backgroundColor: '#fff',
-    borderRadius: 5,
+    backgroundColor: '#000',
+    borderRadius: 20,
     elevation: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -36,14 +36,14 @@ const styles = StyleSheet.create({
   },
   backButtonText: {
     fontSize: 16,
-    color: '#000',
+    color: '#fff',
   },
   toggleButton: {
     position: 'absolute',
     right: 20,
     padding: 10,
-    backgroundColor: '#fff',
-    borderRadius: 5,
+    backgroundColor: '#000',
+    borderRadius: 20,
     elevation: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
   },
   toggleButtonText: {
     fontSize: 16,
+    color: '#fff'
   },
   reserveButtonContainer: {
     position: 'absolute',
