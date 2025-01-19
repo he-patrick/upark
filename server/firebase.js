@@ -25,9 +25,10 @@ export const fetchUserData = async () => {
   }
 };
 
-export const addUser = async (email, name, license) => {
+export const addUser = async (appleID, email, name, license) => {
   try {
     const docRef = await addDoc(colRef, {
+      appleID,
       email,
       name,
       license,

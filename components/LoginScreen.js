@@ -61,7 +61,7 @@ const LoginScreen = ({ navigation }) => {
           const users = await fetchUserData(); // Wait for the users array to be fetched
                 
           users.forEach(user => {
-            if (user.email === credential.email) {
+            if (user.appleID === credential.user) {
               userFound = true;
               return; // Break out of the loop
             }
@@ -69,7 +69,7 @@ const LoginScreen = ({ navigation }) => {
       
           // If user not found, add them
           if (!userFound) {
-            await addUser(credential.email, null, null);
+            await addUser(credential.user, credential.email, null, null);
             userFound = false;
           }
         } catch (error) {
