@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, SafeAreaView } from 'react-native';
 
 const styles = StyleSheet.create({
     container: {
@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     tab: {
       color: '#fff',
       fontSize: 18,
+      fontFamily: 'Alexandria',
     },
     activeTab: {
       borderBottomWidth: 2,
@@ -75,7 +76,7 @@ const styles = StyleSheet.create({
 
 const DashboardPage = () => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {/* Top Tabs */}
       <View style={styles.tabs}>
         <Text style={[styles.tab, styles.activeTab]}>Park</Text>
@@ -111,7 +112,7 @@ const DashboardPage = () => {
       <TouchableOpacity style={styles.settingsIcon}>
         <Text style={styles.gearText}>⚙</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 
