@@ -83,6 +83,7 @@ export default function WelcomePagePost({navigation, route}) {
   
       navigation.navigate('Payment', {
         name: fullName,
+        appleID: appleID
       });
     } catch (error) {
       console.error('Error updating database:', error);

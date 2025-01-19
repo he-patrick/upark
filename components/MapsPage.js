@@ -3,7 +3,6 @@ import {
   View,
   StyleSheet,
   Animated,
-  Dimensions,
   TouchableOpacity,
   Text,
   Image,
@@ -11,7 +10,8 @@ import {
 import MapView, { Marker } from 'react-native-maps';
 import BottomNavBar from './BottomNavBar';
 import * as Location from 'expo-location';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
+import app from '../server/firebase';
 
 const styles = StyleSheet.create({
   container: {
@@ -19,6 +19,24 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 1,
+  },
+  backButtonContainer: {
+    position: 'absolute',
+    top: 40,
+    left: 20,
+    padding: 10,
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    zIndex: 1000,
+  },
+  backButtonText: {
+    fontSize: 16,
+    color: '#000',
   },
   toggleButton: {
     position: 'absolute',
@@ -61,74 +79,18 @@ const styles = StyleSheet.create({
 });
 
 // Parking lots data with coordinates
-const parkingLots = [
-  {
-    id: 1,
-    name: '701-E King Edward Ave',
-    latitude: 45.421894,
-    longitude: -75.67933,
-  },
-  {
-    id: 2,
-    name: '193 Somerset St. E',
-    latitude: 45.422287,
-    longitude: -75.679905,
-  },
-  {
-    id: 3,
-    name: 'LeBlanc Residence, 45 Copernicus St',
-    latitude: 45.424609,
-    longitude: -75.683021,
-  },
-  {
-    id: 4,
-    name: '96 Russell Ave',
-    latitude: 45.424409,
-    longitude: -75.677453,
-  },
-  {
-    id: 5,
-    name: '203 Russell Ave',
-    latitude: 45.422326245168286,
-    longitude: -75.67479222216723,
-  },
-  {
-    id: 6,
-    name: '284 Laurier Ave E',
-    latitude: 45.426475,
-    longitude: -75.679551,
-  },
-  {
-    id: 7,
-    name: '320 Menorca Dr',
-    latitude: 45.289375,
-    longitude: -75.921689,
-  },
-  {
-    id: 8,
-    name: '256 Aquilo Crescent',
-    latitude: 45.289243,
-    longitude: -75.924778,
-  },
-  {
-    id: 9,
-    name: '507 Rosehill Ave',
-    latitude: 45.289774,
-    longitude: -75.918155,
-  },
-  {
-    id: 10,
-    name: '210 Huntmar Dr',
-    latitude: 45.294073,
-    longitude: -75.926343,
-  },
-  {
-    id: 11,
-    name: '180 Huntmar Dr',
-    latitude: 45.292724,
-    longitude: -75.923575,
-  },
-];
+const parkingLots = [ 
+  { id: 1, name: '701-E King Edward Ave', latitude: 45.421894, longitude: -75.67933, }, 
+  { id: 2, name: '193 Somerset St. E', latitude: 45.422287, longitude: -75.679905, }, 
+  { id: 3, name: 'LeBlanc Residence, 45 Copernicus St', latitude: 45.424609, longitude: -75.683021, }, 
+  { id: 4, name: '96 Russell Ave', latitude: 45.424409, longitude: -75.677453, }, 
+  { id: 5, name: '203 Russell Ave', latitude: 45.422326245168286, longitude: -75.67479222216723, }, 
+  { id: 6, name: '284 Laurier Ave E', latitude: 45.426475, longitude: -75.679551, }, 
+  { id: 7, name: '320 Menorca Dr', latitude: 45.289375, longitude: -75.921689, }, 
+  { id: 8, name: '256 Aquilo Crescent', latitude: 45.289243, longitude: -75.924778, }, 
+  { id: 9, name: '507 Rosehill Ave', latitude: 45.289774, longitude: -75.918155, }, 
+  { id: 10, name: '210 Huntmar Dr', latitude: 45.294073, longitude: -75.926343, }, 
+  { id: 11, name: '180 Huntmar Dr', latitude: 45.292724, longitude: -75.923575, }, ];
 
 // Haversine formula to calculate distances
 function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
@@ -147,9 +109,8 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
   return d;
 }
 
-export default function MapsPage() {
-  const route = useRoute();
-  const { latitude, longitude } = route.params || {};
+export default function MapsPage({navigation, route}) {
+  const { latitude, longitude, appleID, selectedStartTime, selectedEndTime } = route.params;
 
   // State to manage the map region
   const [mapRegion, setMapRegion] = useState(null);
@@ -251,6 +212,21 @@ export default function MapsPage() {
 
   return (
     <View style={styles.container}>
+      {/* Back Button */}
+      <View style={styles.backButtonContainer}>
+        <TouchableOpacity onPress={() => navigation.navigate('DashboardPage',
+          {
+            latitude: null,
+            longitude: null,
+            appleID: appleID,
+            selectedStartTime: null,
+            selectedEndTime: null,
+          })}>
+          <Text style={styles.backButtonText}>Back</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Map View */}
       <MapView
         mapType={mapType}
         style={styles.map}
@@ -299,12 +275,13 @@ export default function MapsPage() {
         animatedHeight={animatedHeight}
         selectedParkingLotId={selectedParkingLotId}
         setSelectedParkingLotId={setSelectedParkingLotId}
+        appleID={appleID}
       />
 
       {/* Reserve Button */}
       <View style={styles.reserveButtonContainer}>
         <TouchableOpacity style={styles.reserveButton}>
-          <Text style={styles.reserveButtonText}>Book your spot</Text>
+          <Text style={styles.reserveButtonText} onPress={() => navigation.navigate('BookingConfirmedPage',{ latitude, longitude, appleID, selectedStartTime, selectedEndTime })}>Book your spot</Text>
         </TouchableOpacity>
       </View>
     </View>

@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
 
 export default function PaymentPage({navigation, route}) {
     
-    const {name} = route.params;
+    const {name, appleID} = route.params;
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null); // Selected value
     const [items, setItems] = useState([
@@ -178,7 +178,15 @@ export default function PaymentPage({navigation, route}) {
         </View>
         </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('DashboardPage')}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('DashboardPage', {
+          latitude: null,
+          longitude: null,
+          appleID: appleID,
+          selectedStartTime: appleID,
+          selectedEndTime: null,
+        }
+        )}>
+          
           <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>
       </View>

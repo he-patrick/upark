@@ -105,6 +105,8 @@ const styles = StyleSheet.create({
 
 export default function ScheduleTime({navigation, route}) {
 
+  const {latitude, longitude, appleID} = route.params;
+
   const [startSelected, setstartSelected] = useState(true);
   const [selectedStartTime, setSelectedStartTime] = useState(new Date());
   const [selectedEndTime, setSelectedEndTime] = useState(new Date());
@@ -120,6 +122,23 @@ export default function ScheduleTime({navigation, route}) {
     const currentDate = selectedDate || selectedEndTime;
     setSelectedEndTime(currentDate);
     // console.log(currentDate);
+  };
+  const handleNextPress = () => {
+    console.log('Navigating to Maps with the following params:', {
+      latitude,
+      longitude,
+      appleID,
+      selectedStartTime,
+      selectedEndTime,
+    });
+
+    navigation.navigate('Maps', {
+      latitude,
+      longitude,
+      appleID,
+      selectedStartTime,
+      selectedEndTime,
+    });
   };
 
   return (
@@ -161,8 +180,19 @@ export default function ScheduleTime({navigation, route}) {
         <View>
             <Text style={styles.smallText}>{selectedStartTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} Start, {selectedEndTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} End</Text>
         </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button}>
+        <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => handleNextPress()}
+            // navigation.navigate('Maps', {
+            //   latitude,
+            //   longitude,
+            //   appleID,
+            //   selectedStartTime,
+            //   selectedEndTime,
+            // })
+          // }
+        >
           <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>
       </View>

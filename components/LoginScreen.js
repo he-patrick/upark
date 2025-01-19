@@ -76,11 +76,16 @@ const LoginScreen = ({ navigation }) => {
           console.error("Error handling user check:", error);
         }
       };
-
       await handleUserCheck();
 
       if (userFound === true) {
-        navigation.navigate('DashboardPage');
+        navigation.navigate('DashboardPage', {
+          latitude: null,
+          longitude: null,
+          appleID: credential.user,
+          selectedStartTime: null,
+          selectedEndTime: null,
+        });
       } else {
           navigation.navigate('SelectUser', {
           appleID: credential.user,

@@ -1,7 +1,9 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 
-const BookingConfirmedPage = ({ navigation }) => {
+const BookingConfirmedPage = ({ navigation, route }) => {
+  const { latitude, longitude, appleID, selectedStartTime, selectedEndTime } = route.params;
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Booking Confirmed!</Text>
@@ -11,7 +13,7 @@ const BookingConfirmedPage = ({ navigation }) => {
       <Text style={styles.subtitle}>Uspace 10:15AM - 11:15AM</Text>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('DashboardPage')} // Navigate to 'Home' screen
+        onPress={() => navigation.navigate('DashboardPage', { latitude, longitude, appleID, selectedStartTime, selectedEndTime })} // Navigate to 'Home' screen
         >
         <Text style={styles.buttonText}>Done</Text>
       </TouchableOpacity>

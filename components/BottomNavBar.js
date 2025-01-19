@@ -80,6 +80,7 @@ export default function BottomNavBar({
   animatedHeight,
   selectedParkingLotId,
   setSelectedParkingLotId,
+  appleID,
 }) {
   const initialHeightRef = useRef(COLLAPSED_HEIGHT);
   const flatListRef = useRef(null);
