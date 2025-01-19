@@ -22,7 +22,7 @@ export default function SelectUserPage({navigation, route}) {
     });
   };
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.top_content}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Are...</Text>
@@ -44,7 +44,7 @@ export default function SelectUserPage({navigation, route}) {
             <Image source={require('./../assets/white_arrow.png')} style={styles.buttonimg}/>
           </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'column',
     alignItems: 'center',
-    height: '50%',
-    paddingTop: 80,
+    height: '52%',
+    paddingTop: 110,
     paddingStart: 40,
   },
   bottom_content: {
