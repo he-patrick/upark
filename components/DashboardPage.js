@@ -34,13 +34,16 @@ const styles = StyleSheet.create({
     searchContainer: {
       backgroundColor: '#343434',
       marginVertical: 16,
-      // width: 280,
+      alignContent: 'center',
+      width: 320,
+      height: 48,
+      borderRadius: 20,
       flexDirection: 'row',
+      alignSelf: 'center',
     },
     searchInput: {
       backgroundColor: '#343434',
       color: '#fff',
-      borderRadius: 20,
       padding: 12,
       fontSize: 16,
     },
@@ -51,7 +54,11 @@ const styles = StyleSheet.create({
     },
     historyTitle: {
       color: '#fff',
-      fontSize: 20,
+      fontSize: 24,
+      fontFamily: 'Alexandria',
+      alignSelf: 'left',
+      paddingTop: 30,
+      paddingHorizontal: 50,
       marginBottom: 8,
     },
     historyCard: {
@@ -59,12 +66,12 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
     image: {
-      width: 150,
-      height: 150,
+      width: 200,
+      height: 200,
       borderRadius: 8,
     },
     emptyText: {
-      color: '#fff',
+      color: '#A3A3A3',
       fontSize: 16,
       marginTop: 16,
     },
@@ -83,6 +90,9 @@ const styles = StyleSheet.create({
       color: '#fff',
       fontSize: 24,
     },
+    searchIcon: {
+      padding: 12,
+    }
 });
 
 const DashboardPage = () => {
@@ -129,10 +139,12 @@ const DashboardPage = () => {
 
       {/* Search Bar */}
       <View style={styles.searchContainer}>
-        <MaterialIcons name="search" size={24} color="#A3A3A3" />
+        <View style={styles.searchIcon}>
+          <MaterialIcons name="search" size={24} color="#A3A3A3" />
+        </View>
         <TextInput
             style={styles.searchInput}
-            placeholder="Search parking spaces ..."
+            placeholder="Search parking spaces..."
             placeholderTextColor="#A3A3A3"
             value={address}
             onChangeText={setAddress} // Update the address state
@@ -147,9 +159,7 @@ const DashboardPage = () => {
         {/* History Card */}
         <View style={styles.historyCard}>
           <Image
-            source={{
-              uri: 'https://cdn.discordapp.com/attachments/1326009133056393266/1330284491788255332/image.png?ex=678d6b7a&is=678c19fa&hm=a03bd2a63d1b1d42385bb8641f72cc63dc7d217784c91335d203f93f528cdb49&',
-            }}
+            source={require('../assets/driving_car.png')}
             style={styles.image}
           />
           <Text style={styles.emptyText}>Seems pretty empty for now...</Text>
