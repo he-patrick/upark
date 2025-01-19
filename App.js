@@ -15,6 +15,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './components/LoginScreen';
 import BookingConfirmedPage from './components/BookingConfirmedPage';
 import SpotRegistrationConfirmedPage from './components/SpotRegistrationConfirmedPage';
+import WelcomePagePost from './components/WelcomePagePost';
 import * as Font from 'expo-font';
 
 const Stack = createNativeStackNavigator();
@@ -63,6 +64,7 @@ export default function App() {
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="SelectUser" component={SelectUserPage} />
         <Stack.Screen name="Welcome" component={WelcomePage} />
+        <Stack.Screen name="WelcomePost" component={WelcomePagePost} />
         <Stack.Screen name="Payment" component={PaymentPage} />
         <Stack.Screen name="DashboardPage" component={DashboardPage} />
         <Stack.Screen name="ScheduleTime" component={ScheduleTime} />

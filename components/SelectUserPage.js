@@ -1,17 +1,25 @@
 import React from 'react';
 import { View, Image, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import app from '../server/firebase';
 
 
 
 
 
-export default function SelectUserPage( { navigation }) {
+export default function SelectUserPage({navigation, route}) {
+  const {appleID, email} = route.params;
   const handlePark = () => {
-    navigation.navigate('Welcome');
+    navigation.navigate('Welcome', {
+      appleID: appleID,
+      email: email,
+    });
   };
   
   const handlePost = () => {
-    navigation.navigate("WelcomePagePost");
+    navigation.navigate('WelcomePost', {
+      appleID: appleID,
+      email: email,
+    });
   };
   return (
     <SafeAreaView style={styles.container}>
