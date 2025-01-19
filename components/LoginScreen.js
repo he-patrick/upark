@@ -82,7 +82,10 @@ const LoginScreen = ({ navigation }) => {
       if (userFound === true) {
         navigation.navigate('DashboardPage');
       } else {
-        navigation.navigate('Welcome');
+          navigation.navigate('Welcome', {
+          appleID: credential.user,
+          email: credential.email,
+        });
       }
       // You can now use credential.user, credential.email, etc.
 

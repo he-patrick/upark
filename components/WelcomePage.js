@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { updateUserInfo } from '../server/firebase';
 
 const styles = StyleSheet.create({
   container: {
@@ -64,7 +65,30 @@ const styles = StyleSheet.create({
   }
 });
 
-export default function WelcomePage({navigation}) {
+export default function WelcomePage({navigation, route}) {
+  const { appleID, email } = route.params;
+  const [fullName, setFullName] = useState('');
+  const [licensePlate, setLicensePlate] = useState('');
+
+  const handleSubmit = async () => {
+    if (!fullName.trim() || !licensePlate.trim()) {
+      Alert.alert('Error', 'Please fill in all fields');
+      return;
+    }
+  
+    try {
+      // Use updateUserInfo instead of addUser
+      await updateUserInfo(appleID, fullName, licensePlate);
+  
+      navigation.navigate('Payment', {
+        name: fullName,
+      });
+    } catch (error) {
+      console.error('Error updating database:', error);
+      Alert.alert('Error', 'Failed to update your information. Please try again.');
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
@@ -85,6 +109,8 @@ export default function WelcomePage({navigation}) {
               style={styles.input}
               placeholder="John Smith"
               placeholderTextColor="#A3A3A3"
+              value={fullName}  // Bind to state
+              onChangeText={setFullName}  // Update state on change
             />
           </View>
           <View style={styles.inputContainer}>
@@ -95,12 +121,14 @@ export default function WelcomePage({navigation}) {
               style={styles.input}
               placeholder="ABCD 123"
               placeholderTextColor="#A3A3A3"
+              value={licensePlate}  // Bind to state
+              onChangeText={setLicensePlate}  // Update state on change
             />
           </View>
         </View>
         </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Payment')}>
+        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>
       </View>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { fetchUserData } from '../server/firebase';
 
 const styles = StyleSheet.create({
   container: {
@@ -71,13 +72,16 @@ const styles = StyleSheet.create({
   }
 });
 
-export default function PaymentPage({navigation}) {
+export default function PaymentPage({navigation, route}) {
+    
+    const {name} = route.params;
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <View style={styles.h1Container}>
           <Text style={styles.h1}>
-            Hi, ...
+            Hi, {name}!
           </Text>
           <Text style={styles.h2}>
             Next, add a payment method to continue to Upark
