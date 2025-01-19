@@ -76,7 +76,7 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
   return d;
 }
 
-export default function MapsPage() {
+export default function PostingMap({navigation}) {
   const route = useRoute();
   const { latitude, longitude } = route.params || {};
 
@@ -181,6 +181,16 @@ export default function MapsPage() {
     await fetchAddress(coordinate);
   };
 
+  const handleConfirm = () => {
+    if (!markerCoordinate) {
+      alert('Please select a parking lot first!');
+      return;
+    }
+
+    // Handle the reservation confirmation
+    navigation.navigate('ProofOfOwnershipPage')
+  };
+
   // Function to fetch address using OpenStreetMap Nominatim API
   const fetchAddress = async (coordinate) => {
     const { latitude, longitude } = coordinate;
@@ -281,7 +291,8 @@ export default function MapsPage() {
 
       {/* Reserve Button */}
       <View style={styles.reserveButtonContainer}>
-        <TouchableOpacity style={styles.reserveButton}>
+        <TouchableOpacity style={styles.reserveButton}
+          onPress={handleConfirm}>
           <Text style={styles.reserveButtonText}>Confirm</Text>
         </TouchableOpacity>
       </View>
