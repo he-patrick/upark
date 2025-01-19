@@ -57,7 +57,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator 
-        initialRouteName="Login"
+        initialRouteName="SpotRegistrationConfirmedPage"
         screenOptions={{
           headerShown: false // This hides the navigation header
         }}

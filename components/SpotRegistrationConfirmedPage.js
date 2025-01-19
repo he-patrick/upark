@@ -6,7 +6,7 @@ const SpotRegistrationConfirmedPage = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.title}>Spot registered successfully!</Text>
       {/* Local image */}
-      <Image source={require('../assets/parked.png')} style={styles.image} />
+      <Image source={require('../assets/stopped.png')} style={styles.image} />
       {/* HARDCODED */}
       <Text style={styles.paragraph}>Our team is reviewing your submission to ensure all required documents are valid. This process typically takes <Text style={styles.boldText}>a few business days.</Text></Text>
       <Text style={styles.paragraph}>You will receive a confirmation email once your parking spot is approved and listed on the platform.</Text>
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: 'Alexandria',
-    fontSize: 27,
+    fontSize: 24,
     fontWeight: 400,
     color: '#ffffff',
   },
