@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, SafeAreaView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, SafeAreaView, Linking } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
@@ -33,15 +33,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#343434',
     marginVertical: 16,
     alignContent: 'center',
-    width: '90%', // Adjusted width to be responsive
+    width: '90%',
     height: 48,
-    borderRadius:50,
+    borderRadius: 50,
     flexDirection: 'row',
     alignSelf: 'center',
-    alignItems: 'center', // Ensure items are centered vertically
+    alignItems: 'center',
   },
   searchIcon: {
-    paddingHorizontal: 12, // Adjusted padding
+    paddingHorizontal: 12,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -119,12 +119,14 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontFamily: 'Anuphan',
+    textAlign: 'center',
   },
 });
 
 const DashboardPage = ({ navigation, route }) => {
   const { latitude, longitude, appleID, selectedStartTime, selectedEndTime } = route.params || {};
   const [address, setAddress] = useState('');
+  const [reservationAddress, setReservationAddress] = useState('');
 
   const handleSearch = async () => {
     if (!address) return;
@@ -154,15 +156,45 @@ const DashboardPage = ({ navigation, route }) => {
   const endTime = selectedEndTime ? new Date(selectedEndTime) : null;
   const hasReservation = latitude && longitude && startTime && endTime;
 
+  useEffect(() => {
+    const fetchAddress = async () => {
+      if (hasReservation) {
+        try {
+          const geocodeResult = await Location.reverseGeocodeAsync({
+            latitude: latitude,
+            longitude: longitude,
+          });
+
+          if (geocodeResult.length > 0) {
+            const { name, street, city, region, postalCode } = geocodeResult[0];
+            const fullAddress = `${name} ${street}, ${city}, ${region} ${postalCode}`;
+            setReservationAddress(fullAddress);
+          } else {
+            setReservationAddress('Address not found');
+          }
+        } catch (error) {
+          console.error('Error fetching address:', error);
+        }
+      }
+    };
+
+    fetchAddress();
+  }, [hasReservation]);
+
+  const openInAppleMaps = () => {
+    if (latitude && longitude) {
+      const url = `http://maps.apple.com/?ll=${latitude},${longitude}&q=Parking_Location`;
+      Linking.openURL(url).catch((err) => console.error('Error opening Apple Maps:', err));
+    }
+  };  
+
   return (
     <SafeAreaView style={styles.container}>
-      {/* Top Tabs */}
       <View style={styles.tabs}>
         <Text style={[styles.tab, styles.activeTab]}>Park</Text>
         <Text style={styles.tab}>Post</Text>
       </View>
 
-      {/* Search Bar */}
       <View style={styles.searchContainer}>
         <View style={styles.searchIcon}>
           <MaterialIcons name="search" size={24} color="#A3A3A3" />
@@ -177,11 +209,10 @@ const DashboardPage = ({ navigation, route }) => {
         />
       </View>
 
-      {/* History Section */}
       <View style={styles.historyContainer}>
-        <Text style={styles.historyTitle}>History</Text>
+        <Text style={styles.historyTitle}>Bookings</Text>
         {hasReservation ? (
-          <View style={styles.reservationCard}>
+          <TouchableOpacity onPress={openInAppleMaps} style={styles.reservationCard}>
             <MapView
               style={styles.map}
               initialRegion={{
@@ -195,15 +226,13 @@ const DashboardPage = ({ navigation, route }) => {
             </MapView>
             <View style={styles.timeContainer}>
               <Text style={styles.timeText}>
-                Start Time:{' '}
-                {startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                {reservationAddress}
               </Text>
               <Text style={styles.timeText}>
-                End Time:{' '}
-                {endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                {startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} Start, {endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} End
               </Text>
             </View>
-          </View>
+          </TouchableOpacity>
         ) : (
           <View style={styles.historyCard}>
             <Image

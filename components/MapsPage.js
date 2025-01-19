@@ -280,8 +280,19 @@ export default function MapsPage({navigation, route}) {
 
       {/* Reserve Button */}
       <View style={styles.reserveButtonContainer}>
-        <TouchableOpacity style={styles.reserveButton}>
-          <Text style={styles.reserveButtonText} onPress={() => navigation.navigate('BookingConfirmedPage',{ latitude, longitude, appleID, selectedStartTime, selectedEndTime })}>Book your spot</Text>
+        <TouchableOpacity style={styles.reserveButton} onPress={() => {
+          const selectedParkingLot = parkingLotsState.find(lot => lot.id === selectedParkingLotId);
+          if (selectedParkingLot) {
+            navigation.navigate('BookingConfirmedPage', {
+              latitude: selectedParkingLot.latitude,
+              longitude: selectedParkingLot.longitude,
+              appleID,
+              selectedStartTime,
+              selectedEndTime
+            });
+          }
+        }}>
+          <Text style={styles.reserveButtonText}>Book your spot</Text>
         </TouchableOpacity>
       </View>
     </View>
