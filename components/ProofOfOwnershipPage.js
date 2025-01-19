@@ -5,7 +5,7 @@ import { PaperProvider, Checkbox } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const SpotRegistrationConfirmedPage = ({ navigation }) => {
-    const [isChecked, setIsChecked] = useState(false);
+    const [isChecked, setIsChecked] = useState(true);
     const [file, setFile] = useState(null);
     const handleFilePicker = async () => {
         try {
@@ -52,7 +52,7 @@ const SpotRegistrationConfirmedPage = ({ navigation }) => {
         <Icon name="upload" size={24} color="#ffffff" />
         <Text style={styles.uploadbuttonText}>   Upload</Text>
       </TouchableOpacity>
-      {file && file.assets.map((asset, index) => (
+      {file && file.assets && file.assets.map((asset, index) => (
         <Text style={styles.text} key={index}>
           {asset.name}
         </Text>
