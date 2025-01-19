@@ -54,34 +54,36 @@ const LoginScreen = ({ navigation }) => {
       });
 
       console.log('Apple Sign-In successful!', credential);
-      
+      let userFound = null;
+
       const handleUserCheck = async () => {
         try {
           const users = await fetchUserData(); // Wait for the users array to be fetched
-          
-          let userFound = false;
-      
+                
           users.forEach(user => {
             if (user.email === credential.email) {
               userFound = true;
-              navigation.navigate('DashboardPage');
+              return; // Break out of the loop
             }
           });
       
           // If user not found, add them
           if (!userFound) {
             await addUser(credential.email, null, null);
-            navigation.navigate('Welcome');
+            userFound = false;
           }
         } catch (error) {
           console.error("Error handling user check:", error);
         }
       };
-      
-      handleUserCheck();
 
+      await handleUserCheck();
 
-      navigation.navigate('Welcome');
+      if (userFound === true) {
+        navigation.navigate('DashboardPage');
+      } else {
+        navigation.navigate('Welcome');
+      }
       // You can now use credential.user, credential.email, etc.
 
       // Handle user data
