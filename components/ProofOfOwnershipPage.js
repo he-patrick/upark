@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, Dimensions, TouchableOpacity, Switch } from 'react-native';
+import { View, Text, Image, StyleSheet, Dimensions, TouchableOpacity, Switch, SafeAreaView } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import { PaperProvider, Checkbox } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -29,8 +29,9 @@ const SpotRegistrationConfirmedPage = ({ navigation }) => {
         }
     };
   return (
-    <PaperProvider>
-    <View style={styles.container}>
+    
+    <SafeAreaView style={styles.container}>
+      <View style={styles.upperContent}>
       {/* Centered Title */}
       <Text style={styles.title}>Upload proof of ownership</Text>
 
@@ -47,45 +48,92 @@ const SpotRegistrationConfirmedPage = ({ navigation }) => {
       <Text style={styles.text}>
         Note: Parking spots registered without valid proof of ownership will not be accepted. Ensuring proper documentation protects all users and maintains the integrity of the marketplace.
       </Text>
-      
       <TouchableOpacity style={styles.uploadbutton} onPress={handleFilePicker}>
         <Icon name="upload" size={24} color="#ffffff" />
         <Text style={styles.uploadbuttonText}>    Upload</Text>
       </TouchableOpacity>
-      <View style={styles.transparentRectangle} />
-      <View style={styles.checkboxContainer}>
+      </View>
+      
+      
+      {/* <View style={styles.transparentRectangle} /> */}
+      {/* <View style={styles.checkboxContainer}>
         <Checkbox
           status={isChecked ? 'checked' : 'unchecked'}
           onPress={() => setIsChecked(!isChecked)} // Toggle checkbox on press
           color='#000000'
-          uncheckedColor="black"
+          uncheckedColor="#000"
           style={styles.checkbox}
         //   checkedColor="#000000"
         //   uncheckedColor='#000000'
         />
         <Text style={styles.checkboxLabel}>{'I confirm that I have read, understand, and agree to the Terms and Conditions, Privacy Policy, and any applicable policies regarding the use of this platform. I acknowledge that providing false or misleading information may result in the removal of my listing and account suspension.'}</Text>
+      </View> */}
+      <View style={styles.lowerContent}>
+      <View style={styles.checkboxContainer}>
+        {/* <Checkbox
+          status={isChecked ? 'checked' : 'unchecked'}
+          onPress={() => setIsChecked(!isChecked)} // Toggle checkbox on press
+          color='#000000'
+          uncheckedColor="#000"
+          style={styles.checkbox}
+        //   checkedColor="#000000"
+        //   uncheckedColor='#000000'
+        /> */}
+        {isChecked ? <TouchableOpacity style={styles.square} onPress={() => setIsChecked(!isChecked)} /> : <TouchableOpacity style={styles.squarePressed} onPress={() => setIsChecked(!isChecked)}><Text style={styles.checkText}>X</Text></TouchableOpacity>}
+        <Text style={styles.label}>I confirm that I have read, understand, and agree to the Terms and Conditions. I acknowledge that providing false or misleading information may result in the removal of my listing and account suspension.</Text>
       </View>
       
 
       {/* Centered Button at the Bottom */}
-      <TouchableOpacity 
-        style={styles.button}
-        onPress={() => navigation.navigate('DashboardPage')}
-        >
-        
-        <Text style={styles.buttonText}>Next</Text>
-      </TouchableOpacity>
-    </View>
-    </PaperProvider>
+      
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('DashboardPage')}>
+          <Text style={styles.buttonText}>Next</Text>
+        </TouchableOpacity>
+      </View>
+      </View>
+    </SafeAreaView>
+    
   );
 };
 
 const styles = StyleSheet.create({
+  label: {
+    paddingLeft: 10,
+  },
+  checkText: {
+    color: '#fff',
+    padding: 4,
+    fontFamily: 'Alexandria',
+    alignSelf: 'center'
+  },
+  square: {
+    width: 30,  // Width of the square
+    height: 30,
+    borderWidth: 2,
+        borderColor: 'black', 
+        borderRadius: 5,
+        backgroundColor: 'white',
+  },
+  squarePressed: {
+    width: 30,  // Width of the square
+    height: 30,
+    borderWidth: 2,
+    backgroundColor: 'black',
+        borderColor: 'black', 
+        borderRadius: 5,
+  },
+  buttonContainer: {
+    paddingBottom: 50,
+  },
+  upperContent: {
+    paddingTop: 100,
+  },
     container: {
         flex: 1, // Take up full screen height
         // paddingTop: 20, // Padding at the top for the title
         backgroundColor: '#ffffff',
-        justifyContent: 'center', // Start content from the top
+        justifyContent: 'space-between', // Start content from the top
     },
     title: {
         fontFamily: 'Alexandria',
@@ -97,7 +145,7 @@ const styles = StyleSheet.create({
     },
     text: {
         fontFamily: 'Anuphan',
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: 400,
         color: '#000000',
         textAlign: 'left', // Left-aligned text
@@ -106,7 +154,7 @@ const styles = StyleSheet.create({
     },
     boldtext: {
         fontFamily: 'Anuphan',
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: 400,
         color: '#000000',
         textAlign: 'left', // Left-aligned text
@@ -120,7 +168,7 @@ const styles = StyleSheet.create({
     },
     bulletPoint: {
         fontFamily: 'Anuphan',
-        fontSize: 13,
+        fontSize: 14,
         fontWeight: 400,
         color: '#000000',
         textAlign: 'left', // Left-align the bullet point text
@@ -146,6 +194,7 @@ const styles = StyleSheet.create({
         color: '#ffffff'
     },
     uploadbutton: {
+        marginTop: 10,
         left: '50%', // Move it to the center horizontally
         transform: [{ translateX: -175 }], // Offset by half the button's width to center it
         width: 350, // Button width (can adjust as needed)
@@ -165,18 +214,20 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     checkboxContainer: {
+      // backgroundColor: '#343434',
         flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 20,
-        // color: '#000000',
-        paddingHorizontal: 40,
-        left: '50%', // Move it to the center horizontally
-        transform: [{ translateX: -175 }], // Offset by half the button's width to center it
-        width: 350, // Button width (can adjust as needed)
-        position: 'absolute', // Pins the button to the bottom of the screen
+        // alignItems: 'center',
+        // marginBottom: 20,
+        // // color: '#000000',
+        paddingHorizontal: 33,
+        // justifyContent: 'center',
+        // left: '50%', // Move it to the center horizontally
+        // transform: [{ translateX: -175 }], // Offset by half the button's width to center it
+        width: 380, // Button width (can adjust as needed)
+        // position: 'absolute', // Pins the button to the bottom of the screen
         bottom: 100, // Adds space from the bottom of the screen
-        padding: 10,
-        borderRadius: 5,
+        // padding: 10,
+        // borderRadius: 5,
     },
     checkboxLabel: {
         fontSize: 12,
