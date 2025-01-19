@@ -16,6 +16,7 @@ import LoginScreen from './components/LoginScreen';
 import BookingConfirmedPage from './components/BookingConfirmedPage';
 import SpotRegistrationConfirmedPage from './components/SpotRegistrationConfirmedPage';
 import WelcomePagePost from './components/WelcomePagePost';
+import ProofOfOwnershipPage from './components/ProofOfOwnershipPage';
 import * as Font from 'expo-font';
 
 const Stack = createNativeStackNavigator();
@@ -71,6 +72,7 @@ export default function App() {
         <Stack.Screen name="Maps" component={MapsPage} />
         <Stack.Screen name="BookingConfirmedPage" component={BookingConfirmedPage} />
         <Stack.Screen name="SpotRegistrationConfirmedPage" component={SpotRegistrationConfirmedPage} />
+        <Stack.Screen name="ProofOfOwnershipPage" component={ProofOfOwnershipPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

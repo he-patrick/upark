@@ -38,3 +38,5 @@ yarn-error.*
 app-example
 
 server/firebaseconfig.js
+
+temp.txt
