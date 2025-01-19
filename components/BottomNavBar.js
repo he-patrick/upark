@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -70,8 +70,14 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   parkingLotDistance: {
+    marginTop: 5,
     fontSize: 14,
     color: '#888',
+  },
+  parkingLotPrice: {
+    fontSize: 16,
+    color: '#333',
+    marginTop: 5,
   },
 });
 
@@ -84,6 +90,45 @@ export default function BottomNavBar({
 }) {
   const initialHeightRef = useRef(COLLAPSED_HEIGHT);
   const flatListRef = useRef(null);
+
+  const [parkingLotsWithPrices, setParkingLotsWithPrices] = useState([]);
+
+  // Function to calculate parking price
+  function calculateParkingPrice(time) {
+    const hours = time.getHours();
+    let basePricePerHour;
+
+    if (hours >= 8 && hours < 18) {
+      // Peak hours
+      basePricePerHour = 5; // $5 per hour during peak hours
+    } else {
+      // Off-peak hours
+      basePricePerHour = 2; // $2 per hour during off-peak hours
+    }
+
+    // Add random noise between -$0.50 and +$0.50
+    const noise = (Math.random() - 0.5);
+
+    const finalPricePerHour = basePricePerHour + noise;
+
+    // Round to two decimal places
+    const pricePerHour = Math.round(finalPricePerHour * 100) / 100;
+
+    return pricePerHour;
+  }
+
+  // Calculate prices when filteredParkingLots changes
+  useEffect(() => {
+    const time = new Date();
+    const updatedParkingLots = filteredParkingLots.map((lot) => {
+      const price = calculateParkingPrice(time);
+      return {
+        ...lot,
+        price,
+      };
+    });
+    setParkingLotsWithPrices(updatedParkingLots);
+  }, [filteredParkingLots]);
 
   // Update the `initialHeightRef` based on animated value changes
   useEffect(() => {
@@ -157,7 +202,7 @@ export default function BottomNavBar({
       <View style={styles.contentContainer}>
         <FlatList
           ref={flatListRef}
-          data={filteredParkingLots}
+          data={parkingLotsWithPrices}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item, index }) => {
             const distanceText =
@@ -186,6 +231,9 @@ export default function BottomNavBar({
               >
                 <Text style={styles.parkingLotName}>{item.name}</Text>
                 <Text style={styles.parkingLotDistance}>{distanceText}</Text>
+                <Text style={styles.parkingLotPrice}>
+                  ${item.price} / hour
+                </Text>
               </TouchableOpacity>
             );
           }}
