@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import { fetchUserData } from '../server/firebase';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 const styles = StyleSheet.create({
   container: {
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
   },
   content: {
     justifyContent: 'space-between',
-    paddingTop: 200
+    paddingTop: 150
   },
   inputGroup: {
     paddingTop: 40,
@@ -69,12 +70,34 @@ const styles = StyleSheet.create({
   twoinputContainers: {
     flexDirection: 'row',
     gap: 20
+  },
+  dropdownContainer: {
+    width: 140,
+    color: '#fff',
+  },
+  dropdown: {
+    color: '#fff',
+    backgroundColor: "#343434",
+    borderWidth: 0,
+    // height: 5,
+    borderRadius: 10,
+    // marginTop: 30,
+  },
+  dropdownText: {
+    color: "#A3A3A3"
   }
 });
 
 export default function PaymentPage({navigation, route}) {
     
     const {name} = route.params;
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState(null); // Selected value
+    const [items, setItems] = useState([
+      { label: 'Canada', value: 'Canada' },
+      { label: 'USA', value: 'USA' },
+      { label: 'Mexico', value: 'Mexico' },
+    ]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -111,11 +134,43 @@ export default function PaymentPage({navigation, route}) {
             </View>
             <View style={styles.shortinputContainer}>
               <Text style={styles.labelText}>
-                Exp. Date
+                CVV
               </Text>
               <TextInput
                 style={styles.input}
-                placeholder="MM/YY"
+                placeholder="123"
+                placeholderTextColor="#A3A3A3"
+              />
+            </View>
+          </View>
+          <View style={styles.twoinputContainers}>
+          <View style={styles.dropdownContainer}>
+            <Text style={styles.labelText}>
+              Country
+            </Text>
+            <DropDownPicker
+              open={open}
+              value={value}
+              items={items}
+              setOpen={setOpen}
+              setValue={setValue}
+              setItems={setItems}
+              placeholder="Select an option"
+              style={styles.dropdown}
+              textStyle={styles.dropdownText}
+              dropDownContainerStyle={{
+                backgroundColor: '#343434',
+                color: '#fff'
+              }}
+            />
+          </View>
+            <View style={styles.shortinputContainer}>
+              <Text style={styles.labelText}>
+                Postal Code
+              </Text>
+              <TextInput
+                style={styles.input}
+                placeholder="ABC 123"
                 placeholderTextColor="#A3A3A3"
               />
             </View>

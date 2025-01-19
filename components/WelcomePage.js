@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   },
   content: {
     justifyContent: 'space-between',
-    paddingTop: 200
+    paddingTop: 150
   },
   inputGroup: {
     paddingTop: 40,
