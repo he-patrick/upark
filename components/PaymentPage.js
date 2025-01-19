@@ -13,6 +13,9 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     width: 300
   },
+  shortinputContainer: {
+    width: 140,
+  },
   input: {
     color: '#fff',
     borderRadius: 10,
@@ -61,6 +64,10 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     paddingBottom: 50,
+  },
+  twoinputContainers: {
+    flexDirection: 'row',
+    gap: 20
   }
 });
 
@@ -73,29 +80,41 @@ export default function PaymentPage({navigation}) {
             Hi, ...
           </Text>
           <Text style={styles.h2}>
-            We need some information from you to get started.
+            Next, add a payment method to continue to Upark
           </Text>
         </View>
         <View style={styles.inputGroup}>
           <View style={styles.inputContainer}>
             <Text style={styles.labelText}>
-              Full Name
+              Card Number
             </Text>
             <TextInput
               style={styles.input}
-              placeholder="John Smith"
+              placeholder="XXXX XXXX XXXX XXXX"
               placeholderTextColor="#A3A3A3"
             />
           </View>
-          <View style={styles.inputContainer}>
-            <Text style={styles.labelText}>
-              License Plate
-            </Text>
-            <TextInput
-              style={styles.input}
-              placeholder="ABCD 123"
-              placeholderTextColor="#A3A3A3"
-            />
+          <View style={styles.twoinputContainers}>
+            <View style={styles.shortinputContainer}>
+              <Text style={styles.labelText}>
+                Exp. Date
+              </Text>
+              <TextInput
+                style={styles.input}
+                placeholder="MM/YY"
+                placeholderTextColor="#A3A3A3"
+              />
+            </View>
+            <View style={styles.shortinputContainer}>
+              <Text style={styles.labelText}>
+                Exp. Date
+              </Text>
+              <TextInput
+                style={styles.input}
+                placeholder="MM/YY"
+                placeholderTextColor="#A3A3A3"
+              />
+            </View>
           </View>
         </View>
         </View>
