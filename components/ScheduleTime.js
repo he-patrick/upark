@@ -95,19 +95,31 @@ const styles = StyleSheet.create({
     backgroundColor: '#343434',
     borderRadius: 10,
     width: '100%'
+  },
+  smallText: {
+    fontFamily: 'Anuphan',
+    fontSize: 14,
+    color: '#fff'
   }
 });
 
 export default function ScheduleTime({navigation, route}) {
 
   const [startSelected, setstartSelected] = useState(true);
-  const [selectedTime, setSelectedTime] = useState(new Date());
+  const [selectedStartTime, setSelectedStartTime] = useState(new Date());
+  const [selectedEndTime, setSelectedEndTime] = useState(new Date());
 
   // Handle time change
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || selectedTime;
-    setSelectedTime(currentDate);
-    console.log(currentDate);
+  const onChangeStart = (event, selectedDate) => {
+    const currentDate = selectedDate || selectedStartTime;
+    setSelectedStartTime(currentDate);
+    // console.log(currentDate);
+  };
+
+  const onChangeEnd = (event, selectedDate) => {
+    const currentDate = selectedDate || selectedEndTime;
+    setSelectedEndTime(currentDate);
+    // console.log(currentDate);
   };
 
   return (
@@ -130,14 +142,24 @@ export default function ScheduleTime({navigation, route}) {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.inputGroup}>
+        { startSelected ? <View style={styles.inputGroup}>
             <DateTimePicker
-            value={selectedTime}
+            value={selectedStartTime}
             mode="time" // Only time picker, no date
             display="spinner" // Optionally use "spinner" for iOS (or "clock" for Android)
-            onChange={onChange}
+            onChange={onChangeStart}
             />
+        </View> : <View style={styles.inputGroup}>
+            <DateTimePicker
+            value={selectedEndTime}
+            mode="time" // Only time picker, no date
+            display="spinner" // Optionally use "spinner" for iOS (or "clock" for Android)
+            onChange={onChangeEnd}
+            />
+        </View>}
         </View>
+        <View>
+            <Text style={styles.smallText}>{selectedStartTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} Start, {selectedEndTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} End</Text>
         </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button}>
