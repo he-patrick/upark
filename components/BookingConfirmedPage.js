@@ -47,13 +47,13 @@ const styles = StyleSheet.create({
     bottom: 60, // Adds space from the bottom of the screen
     backgroundColor: '#000000', // Green color
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 10,
     width: '80%', // Button width
     alignItems: 'center',
   },
   buttonText: {
     fontFamily: 'Alexandria',
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: 400,
     color: '#ffffff'
   }

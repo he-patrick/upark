@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#343434',
     marginVertical: 16,
     alignContent: 'center',
-    width: '90%',
+    width: '85%',
     height: 48,
     borderRadius: 50,
     flexDirection: 'row',
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Alexandria',
     alignSelf: 'flex-start',
     paddingTop: 30,
-    paddingHorizontal: 20,
+    paddingHorizontal: 35,
     marginBottom: 8,
   },
   historyCard: {
@@ -97,43 +97,53 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   reservationCard: {
-    width: '90%',
+    width: '85%',
     backgroundColor: '#343434',
     borderRadius: 10,
     padding: 10,
+    paddingBottom: 20,
     marginVertical: 10,
     alignItems: 'center',
     alignSelf: 'center',
   },
   map: {
-    width: '100%',
+    width: '95%',
+    paddingTop: '2%',
     height: 150,
     borderRadius: 10,
   },
   timeContainer: {
     marginTop: 10,
+    padding: 10,
     width: '100%',
     alignItems: 'center',
   },
   timeText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'Anuphan',
+    textAlign: 'center',
+  },
+  addrText: {
+    color: '#fff',
+    fontSize: 14,
+    paddingBottom: 10,
+    fontFamily: 'Alexandria',
     textAlign: 'center',
   },
   finishButton: {
     marginTop: 10,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    backgroundColor: '#ff6b6b',
-    borderRadius: 25,
+    backgroundColor: '#E85151',
+    borderRadius: 10,
     alignItems: 'center',
     alignSelf: 'center',
   },
   finishButtonText: {
     color: '#fff',
-    fontSize: 16,
-    fontFamily: 'Anuphan',
+    fontSize: 14,
+    fontFamily: 'Alexandria',
   },
 });
 
@@ -261,7 +271,7 @@ const DashboardPage = ({ navigation, route }) => {
             <Marker coordinate={{ latitude: latitude, longitude: longitude }} />
             </MapView>
             <View style={styles.timeContainer}>
-            <Text style={styles.timeText}>{reservationAddress}</Text>
+            <Text style={styles.addrText}>{reservationAddress}</Text>
             <Text style={styles.timeText}>
                 {startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} Start, {endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} End
             </Text>
@@ -270,7 +280,7 @@ const DashboardPage = ({ navigation, route }) => {
             style={styles.finishButton}
             onPress={() => handleFinish()}
             >
-            <Text style={styles.finishButtonText}>Exit This Booking</Text>
+            <Text style={styles.finishButtonText}>Exit Booking</Text>
             </TouchableOpacity>
         </TouchableOpacity>
         ) : (

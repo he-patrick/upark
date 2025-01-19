@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Alexandria',
     color: '#fff',
     fontSize: 18,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
   },
 });
 
@@ -264,7 +264,7 @@ export default function MapsPage({navigation, route}) {
       >
         <TouchableOpacity onPress={toggleMapType}>
           <Text style={styles.toggleButtonText}>
-            {mapType === 'terrain' ? 'Switch to Satellite' : 'Switch to Normal'}
+            {mapType === 'terrain' ? 'Satellite' : 'Normal'}
           </Text>
         </TouchableOpacity>
       </Animated.View>

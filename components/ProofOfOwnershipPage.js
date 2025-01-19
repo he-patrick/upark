@@ -50,8 +50,14 @@ const SpotRegistrationConfirmedPage = ({ navigation }) => {
       </Text>
       <TouchableOpacity style={styles.uploadbutton} onPress={handleFilePicker}>
         <Icon name="upload" size={24} color="#ffffff" />
-        <Text style={styles.uploadbuttonText}>    Upload</Text>
+        <Text style={styles.uploadbuttonText}>   Upload</Text>
       </TouchableOpacity>
+      {file && file.assets.map((asset, index) => (
+        <Text style={styles.text} key={index}>
+          {asset.name}
+        </Text>
+      ))}
+      {/* <Text style={styles.text}>{file && JSON.stringify(file)}</Text> */}
       </View>
       
       
@@ -195,6 +201,7 @@ const styles = StyleSheet.create({
     },
     uploadbutton: {
         marginTop: 10,
+        marginBottom: 10,
         left: '50%', // Move it to the center horizontally
         transform: [{ translateX: -175 }], // Offset by half the button's width to center it
         width: 350, // Button width (can adjust as needed)
