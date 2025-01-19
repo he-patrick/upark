@@ -12,10 +12,10 @@ import {
 
 const { height } = Dimensions.get('window');
 
-const COLLAPSED_HEIGHT = 200;
+const COLLAPSED_HEIGHT = 150;
 const HALF_EXPANDED_HEIGHT = height * 0.5;
-const EXPANDED_HEIGHT = height * 0.7;
-const VELOCITY_THRESHOLD = 0.5;
+const EXPANDED_HEIGHT = height * 0.75;
+const VELOCITY_THRESHOLD = 0.3;
 
 const styles = StyleSheet.create({
   bottomNav: {
@@ -48,15 +48,26 @@ const styles = StyleSheet.create({
   },
   parkingLotItem: {
     paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    paddingHorizontal: 15,
+    marginVertical: 5,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    // Optional: Add shadow for a card-like appearance
+    elevation: 2, // For Android
+    shadowColor: '#000', // For iOS
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
   },
   selectedParkingLotItem: {
     backgroundColor: '#e0f7fa', // Highlight color
+    borderWidth: 2,
+    borderColor: '#00796B', // Teal color for the border
   },
   parkingLotName: {
     fontSize: 18,
     fontWeight: '600',
+    color: '#000',
   },
   parkingLotDistance: {
     fontSize: 14,
@@ -71,6 +82,7 @@ export default function BottomNavBar({
   setSelectedParkingLotId,
 }) {
   const initialHeightRef = useRef(COLLAPSED_HEIGHT);
+  const flatListRef = useRef(null);
 
   // Update the `initialHeightRef` based on animated value changes
   useEffect(() => {
@@ -86,9 +98,12 @@ export default function BottomNavBar({
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: (_, gestureState) =>
-        Math.abs(gestureState.dy) > 5,
+        Math.abs(gestureState.dy) > 20,
       onPanResponderMove: (_, gestureState) => {
-        let newHeight = initialHeightRef.current - gestureState.dy;
+        // Apply a scaling factor to gestureState.dy
+        const scalingFactor = 3; // Adjust this value as needed
+        const scaledDy = gestureState.dy / scalingFactor;
+        let newHeight = initialHeightRef.current - scaledDy;
         newHeight = Math.max(
           COLLAPSED_HEIGHT,
           Math.min(newHeight, EXPANDED_HEIGHT)
@@ -110,17 +125,23 @@ export default function BottomNavBar({
               ? HALF_EXPANDED_HEIGHT
               : COLLAPSED_HEIGHT;
         } else {
-          const nearest = [COLLAPSED_HEIGHT, HALF_EXPANDED_HEIGHT, EXPANDED_HEIGHT].reduce(
-            (prev, curr) =>
-              Math.abs(finalHeight - curr) < Math.abs(finalHeight - prev)
-                ? curr
-                : prev
+          const nearest = [
+            COLLAPSED_HEIGHT,
+            HALF_EXPANDED_HEIGHT,
+            EXPANDED_HEIGHT,
+          ].reduce((prev, curr) =>
+            Math.abs(finalHeight - curr) < Math.abs(finalHeight - prev)
+              ? curr
+              : prev
           );
           toHeight = nearest;
         }
 
+        // Adjust the spring animation parameters
         Animated.spring(animatedHeight, {
           toValue: toHeight,
+          friction: 10, // Increase friction to slow down
+          tension: 80, // Adjust tension as needed
           useNativeDriver: false,
         }).start();
       },
@@ -134,27 +155,41 @@ export default function BottomNavBar({
       </View>
       <View style={styles.contentContainer}>
         <FlatList
+          ref={flatListRef}
           data={filteredParkingLots}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => {
+          renderItem={({ item, index }) => {
             const distanceText =
               item.distance < 1
-                ? `${Math.round(item.distance * 5280)} feet`
+                ? `${Math.round(item.distance * 1000)} m`
                 : `${item.distance.toFixed(1)} km`;
 
             return (
               <TouchableOpacity
                 style={[
                   styles.parkingLotItem,
-                  item.id === selectedParkingLotId && styles.selectedParkingLotItem,
+                  item.id === selectedParkingLotId &&
+                    styles.selectedParkingLotItem,
                 ]}
-                onPress={() => setSelectedParkingLotId(item.id)}
+                onPress={() => {
+                  setSelectedParkingLotId(item.id);
+                  try {
+                    flatListRef.current.scrollToIndex({
+                      index,
+                      animated: true,
+                    });
+                  } catch (error) {
+                    console.warn('scrollToIndex error:', error);
+                  }
+                }}
               >
                 <Text style={styles.parkingLotName}>{item.name}</Text>
                 <Text style={styles.parkingLotDistance}>{distanceText}</Text>
               </TouchableOpacity>
             );
           }}
+          // Optional: Adjust if items have fixed height
+          // getItemLayout={(data, index) => ({ length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index })}
         />
       </View>
     </Animated.View>

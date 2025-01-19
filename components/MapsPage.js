@@ -1,10 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, StyleSheet, Animated, Dimensions, TouchableOpacity, Text, Image } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Animated,
+  Dimensions,
+  TouchableOpacity,
+  Text,
+  Image,
+} from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import BottomNavBar from './BottomNavBar';
 import * as Location from 'expo-location';
 import { useRoute } from '@react-navigation/native';
-
 
 const styles = StyleSheet.create({
   container: {
@@ -53,43 +60,73 @@ const styles = StyleSheet.create({
   },
 });
 
-// Updated parking lots data with coordinates
+// Parking lots data with coordinates
 const parkingLots = [
   {
     id: 1,
-    name: 'Parking Lot A',
+    name: '701-E King Edward Ave',
     latitude: 45.421894,
-    longitude: -75.679330,
+    longitude: -75.67933,
   },
   {
     id: 2,
-    name: 'Parking Lot B',
+    name: '193 Somerset St. E',
     latitude: 45.422287,
     longitude: -75.679905,
   },
   {
     id: 3,
-    name: 'Parking Lot C',
+    name: 'LeBlanc Residence, 45 Copernicus St',
     latitude: 45.424609,
     longitude: -75.683021,
   },
   {
     id: 4,
-    name: 'Parking Lot D',
+    name: '96 Russell Ave',
     latitude: 45.424409,
     longitude: -75.677453,
   },
   {
     id: 5,
-    name: 'Parking Lot E',
+    name: '203 Russell Ave',
     latitude: 45.422326245168286,
     longitude: -75.67479222216723,
   },
   {
     id: 6,
-    name: 'Parking Lot F',
+    name: '284 Laurier Ave E',
     latitude: 45.426475,
     longitude: -75.679551,
+  },
+  {
+    id: 7,
+    name: '320 Menorca Dr',
+    latitude: 45.289375,
+    longitude: -75.921689,
+  },
+  {
+    id: 8,
+    name: '256 Aquilo Crescent',
+    latitude: 45.289243,
+    longitude: -75.924778,
+  },
+  {
+    id: 9,
+    name: '507 Rosehill Ave',
+    latitude: 45.289774,
+    longitude: -75.918155,
+  },
+  {
+    id: 10,
+    name: '210 Huntmar Dr',
+    latitude: 45.294073,
+    longitude: -75.926343,
+  },
+  {
+    id: 11,
+    name: '180 Huntmar Dr',
+    latitude: 45.292724,
+    longitude: -75.923575,
   },
 ];
 
@@ -113,14 +150,15 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
 export default function MapsPage() {
   const route = useRoute();
   const { latitude, longitude } = route.params || {};
+
   // State to manage the map region
   const [mapRegion, setMapRegion] = useState(null);
-
   const [mapType, setMapType] = useState('terrain');
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [parkingLotsState, setParkingLotsState] = useState([]);
   const [selectedParkingLotId, setSelectedParkingLotId] = useState(null);
+
   const animatedHeight = useRef(new Animated.Value(200)).current;
 
   // Request location permission and fetch the current location
@@ -137,6 +175,7 @@ export default function MapsPage() {
     })();
   }, []);
 
+  // Set map region based on search coordinates or user's current location
   useEffect(() => {
     if (latitude && longitude) {
       // If search coordinates are provided, set the map region to that location
@@ -159,15 +198,15 @@ export default function MapsPage() {
 
   // Calculate distances and sort parking lots when location changes
   useEffect(() => {
-    if (location) {
+    if (latitude && longitude) {
       const updatedParkingLots = parkingLots.map((parkingLot) => {
         const distanceInKm = getDistanceFromLatLonInKm(
-          location.coords.latitude,
-          location.coords.longitude,
+          latitude,
+          longitude,
           parkingLot.latitude,
           parkingLot.longitude
         );
-        const distance = distanceInKm * 1; // Convert km to miles
+        const distance = distanceInKm; // Keep distance in km
         return {
           ...parkingLot,
           distance: distance,
@@ -179,7 +218,24 @@ export default function MapsPage() {
 
       setParkingLotsState(updatedParkingLots);
     }
-  }, [location]);
+  }, [latitude, longitude]);
+
+  // Center the map on the selected parking lot
+  useEffect(() => {
+    if (selectedParkingLotId) {
+      const selectedParkingLot = parkingLotsState.find(
+        (lot) => lot.id === selectedParkingLotId
+      );
+      if (selectedParkingLot) {
+        setMapRegion({
+          latitude: selectedParkingLot.latitude,
+          longitude: selectedParkingLot.longitude,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.0121,
+        });
+      }
+    }
+  }, [selectedParkingLotId]);
 
   if (!location) {
     return (
@@ -212,12 +268,17 @@ export default function MapsPage() {
             onPress={() => setSelectedParkingLotId(parkingLot.id)}
           >
             <Image
-              source={require('../assets/parking.png')}
+              source={
+                parkingLot.id === selectedParkingLotId
+                  ? require('../assets/selected_parking.png')
+                  : require('../assets/parking.png')
+              }
               style={{ height: 35, width: 35 }}
             />
           </Marker>
         ))}
       </MapView>
+
       {/* Toggle Map Type Button */}
       <Animated.View
         style={[
