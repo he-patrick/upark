@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     height: '100%',
+    backgroundColor: '#000',
   },
   top_content: {
     backgroundColor: '#000',
