@@ -93,7 +93,7 @@ const SpotRegistrationConfirmedPage = ({ navigation }) => {
       {/* Centered Button at the Bottom */}
       
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('DashboardPage')}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SpotRegistrationConfirmedPage')}>
           <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>
       </View>

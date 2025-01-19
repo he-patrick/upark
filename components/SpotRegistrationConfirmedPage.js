@@ -13,7 +13,7 @@ const SpotRegistrationConfirmedPage = ({ navigation }) => {
       <Text style={styles.paragraph}>If you have any questions in the meantime, feel free to contact our support team.</Text>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('DashboardPage')} // Navigate to 'Home' screen
+        onPress={() => navigation.navigate('DashboardPagePost')} // Navigate to 'Home' screen
         >
         <Text style={styles.buttonText}>Done</Text>
       </TouchableOpacity>
@@ -26,19 +26,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#000000',
+    backgroundColor: '#fff',
   },
   title: {
     fontFamily: 'Alexandria',
     fontSize: 24,
     fontWeight: 400,
-    color: '#ffffff',
+    color: '#000',
   },
   subtitle: {
     fontFamily: 'Anuphan',
     fontSize: 16,
     fontWeight: 400,
-    color: '#ffffff',
+    color: '#000',
   },
   image: {
     width: Dimensions.get('window').width * 0.6,
@@ -48,17 +48,17 @@ const styles = StyleSheet.create({
   button: {
     position: 'absolute', // Pins the button to the bottom of the screen
     bottom: 60, // Adds space from the bottom of the screen
-    backgroundColor: '#ffffff', // Green color
+    backgroundColor: '#000', // Green color
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 10,
     width: '80%', // Button width
     alignItems: 'center',
   },
   buttonText: {
     fontFamily: 'Alexandria',
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: 400,
-    color: '#000000'
+    color: '#fff'
   },
   paragraph: {
     fontFamily: 'Anuphan',
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     marginTop: 20, // Adds space between the image and the paragraph
     lineHeight: 17, // Increases line spacing for readability
     paddingHorizontal: 40,
-    color: '#ffffff',
+    color: '#000',
   },
   boldText: {
     fontWeight: 'bold', // Makes this part of the text bold
