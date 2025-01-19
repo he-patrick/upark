@@ -8,6 +8,7 @@ import SelectUserPage from './components/SelectUserPage';
 import WelcomePage from './components/WelcomePage';
 import PaymentPage from './components/PaymentPage';
 import DashboardPage from './components/DashboardPage';
+import ScheduleTime from './components/ScheduleTime';
 import MapsPage from './components/MapsPage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -64,6 +65,7 @@ export default function App() {
         <Stack.Screen name="Welcome" component={WelcomePage} />
         <Stack.Screen name="Payment" component={PaymentPage} />
         <Stack.Screen name="DashboardPage" component={DashboardPage} />
+        <Stack.Screen name="ScheduleTime" component={ScheduleTime} />
         <Stack.Screen name="Maps" component={MapsPage} />
         <Stack.Screen name="BookingConfirmedPage" component={BookingConfirmedPage} />
         <Stack.Screen name="SpotRegistrationConfirmedPage" component={SpotRegistrationConfirmedPage} />

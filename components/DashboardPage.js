@@ -159,7 +159,7 @@ const DashboardPage = () => {
         {/* History Card */}
         <View style={styles.historyCard}>
           <Image
-            source={require('../assets/driving_car.png')}
+            source={require('../assets/parking_sign.png')}
             style={styles.image}
           />
           <Text style={styles.emptyText}>Seems pretty empty for now...</Text>
