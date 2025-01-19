@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, SafeAreaView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons'
+import * as Location from 'expo-location';
+import { useNavigation } from '@react-navigation/native';
+
 
 const styles = StyleSheet.create({
     container: {
@@ -83,6 +86,39 @@ const styles = StyleSheet.create({
 });
 
 const DashboardPage = () => {
+    const [address, setAddress] = useState('');
+    const navigation = useNavigation();
+
+    const handleSearch = async () => {
+        if (!address) return;
+      
+        try {
+          // Ensure the app has permission to access location
+          let { status } = await Location.requestForegroundPermissionsAsync();
+          if (status !== 'granted') {
+            console.error('Permission to access location was denied');
+            return;
+          }
+      
+          // Geocode the address
+          const geocodeResult = await Location.geocodeAsync(address);
+          if (geocodeResult.length === 0) {
+            console.error('No coordinates found for the address');
+            return;
+          }
+      
+          const { latitude, longitude } = geocodeResult[0];
+      
+          // Navigate to MapsPage with the coordinates
+          navigation.navigate('Maps', { latitude, longitude });
+        } catch (error) {
+          console.error('Error during search:', error);
+          // Optionally, display an alert to the user
+        }
+      };
+      
+      
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Top Tabs */}
@@ -95,9 +131,12 @@ const DashboardPage = () => {
       <View style={styles.searchContainer}>
         <MaterialIcons name="search" size={24} color="#A3A3A3" />
         <TextInput
-          style={styles.searchInput}
-          placeholder="Search parking spaces ..."
-          placeholderTextColor="#A3A3A3"
+            style={styles.searchInput}
+            placeholder="Search parking spaces ..."
+            placeholderTextColor="#A3A3A3"
+            value={address}
+            onChangeText={setAddress} // Update the address state
+            onSubmitEditing={handleSearch} // Handle search action when submitted
         />
       </View>
 

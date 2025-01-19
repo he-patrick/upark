@@ -140,7 +140,7 @@ export default function BottomNavBar({
             const distanceText =
               item.distance < 1
                 ? `${Math.round(item.distance * 5280)} feet`
-                : `${item.distance.toFixed(1)} miles`;
+                : `${item.distance.toFixed(1)} km`;
 
             return (
               <TouchableOpacity

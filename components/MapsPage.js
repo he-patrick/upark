@@ -3,6 +3,8 @@ import { View, StyleSheet, Animated, Dimensions, TouchableOpacity, Text, Image }
 import MapView, { Marker } from 'react-native-maps';
 import BottomNavBar from './BottomNavBar';
 import * as Location from 'expo-location';
+import { useRoute } from '@react-navigation/native';
+
 
 const styles = StyleSheet.create({
   container: {
@@ -109,6 +111,11 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
 }
 
 export default function MapsPage() {
+  const route = useRoute();
+  const { latitude, longitude } = route.params || {};
+  // State to manage the map region
+  const [mapRegion, setMapRegion] = useState(null);
+
   const [mapType, setMapType] = useState('terrain');
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -130,6 +137,26 @@ export default function MapsPage() {
     })();
   }, []);
 
+  useEffect(() => {
+    if (latitude && longitude) {
+      // If search coordinates are provided, set the map region to that location
+      setMapRegion({
+        latitude: latitude,
+        longitude: longitude,
+        latitudeDelta: 0.015,
+        longitudeDelta: 0.0121,
+      });
+    } else if (location) {
+      // Default to user's current location
+      setMapRegion({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.015,
+        longitudeDelta: 0.0121,
+      });
+    }
+  }, [latitude, longitude, location]);
+
   // Calculate distances and sort parking lots when location changes
   useEffect(() => {
     if (location) {
@@ -140,10 +167,10 @@ export default function MapsPage() {
           parkingLot.latitude,
           parkingLot.longitude
         );
-        const distanceInMiles = distanceInKm * 0.621371; // Convert km to miles
+        const distance = distanceInKm * 1; // Convert km to miles
         return {
           ...parkingLot,
-          distance: distanceInMiles,
+          distance: distance,
         };
       });
 
@@ -171,13 +198,9 @@ export default function MapsPage() {
       <MapView
         mapType={mapType}
         style={styles.map}
-        region={{
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-          latitudeDelta: 0.015, // Zoom in closer
-          longitudeDelta: 0.0121,
-        }}
+        region={mapRegion}
         showsUserLocation={true}
+        onRegionChangeComplete={(region) => setMapRegion(region)}
       >
         {parkingLotsState.map((parkingLot) => (
           <Marker
