@@ -1,3 +1,8 @@
+# Check it out:
+https://www.youtube.com/watch?v=PtPXbh4Nxvo </br>
+https://dorahacks.io/buidl/21578
+
+
 # Setup
 
 npm install -g eas-cli </br>
